@@ -1,0 +1,1381 @@
+\documentclass[10pt]{article}
+\usepackage{research}
+
+
+
+\title{\Large{The Theory of Sobolev Spaces and its Applications to Second-Order PDEs}}
+\author{Jun Hao (Simon) Hu \footnote{Department of Electrical and Electronics Engineering, University of California at San Diego}}
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+	In this work, I motivative the development of the Sobolev space $W^{k,p}(\Omega)$ for the purposes of solving partial differential equations (PDEs). Sobolev spaces are equipped with excellent mathematical structure and allows us to use tools developed from functional analysis to study PDEs. I examine the applications of the theory of Sobolev space to second-order elliptic and parabolic equations. In particular, I examine the existence and uniqueness of weak solutions to PDEs. 
+\end{abstract}
+\vspace{1in}
+\begin{center}
+	Acknowledgments.
+\end{center}
+
+\small{I would like to acknowledge my friends and family for their continued support in all of my endeavors. Additionally, I would like to acknowledge the tremendous support my instructors have provided me. Their support, criticism, and knowledge have made it possible for me to understand the theory of Sobolev spaces and present their applications in this manner. I am eternally grateful for the opportunity to study Sobolev spaces and their applications to PDEs.}
+
+\newpage 
+
+\tableofcontents
+
+\newpage
+
+\section{Introduction.}
+It is widely accepted that PDEs are not easy to solve, yet they are useful in almost every discipline of study. When analysts solve a PDE problem, they are not interested in solutions that lack a specified degree of smoothness. This is due to practicality, and the application it is being used for. Unfortunately, it is rarely the case that we are able to find such smooth solutions, at least for PDEs with interesting applications. It is in these cases, that analysts turn to numerical methods to solve the problem. Common numerical methods perform a discretization of the domain and then reduce the problem to solving a matrix equation. A deep understanding of the function space in which the solution(s) lie is critical for developing an intuition for the expected outcome of the numerical method. Without such intuition, it would be difficult to confirm our results. Numerical solutions to PDE are often enough for applications in engineering, biology, and physics, but they lack differentiability, continuity, and other topological properties. Analysts are often interested in solutions that have these properties. 
+
+It turns out, these solutions often exist but it requires us to \textit{weaken} the notion of a derivative. The theory of Sobolev spaces introduces the concept of \textit{weak} derivatives, which generalize the notion of a derivative by moving away from the classical, or \textit{strong}, derivative that we are used to in undergraduate calculus courses. The theory of Sobolev spaces give rise to the concept of a \textit{weak} solution to the PDE, which are aptly named after the weak derivative. To understand these weak solutions, we will borrow ideas from functional analysis. Sobolev spaces are useful in this sense, because we can use tools from functional analysis to shine some light onto the PDE problem. 
+
+In this paper, I assume that the reader has already had some exposure to functional analysis. Furthermore, I assume that the reader has background knowledge on the theories of Banach, Hilbert, and $L^p$ spaces. A rudimentary introduction to mollifiers is helpful in understanding the material, though not required. If the reader requires a review, they should consult (insert reference here). Standard results, like inequalities and elementary theorems from functional analysis, may not be proved in the paper. However, a select few of these results will be proved in the appendix. For example, I will make use of the Minkowski, Young, and H\"older's inequalities, but they will not be proved in the paper. Rather, they appear in the appendix. If the reader would like proof, they should consult any standard analysis text. Finally, I assume the reader has previous exposure to PDE theory, of which an introductory course will suffice.  
+
+This paper is divided into five sections, not withstanding this one. In section 2, we explore the concept of a weak derivative and familiarize the reader with the notation used in this paper. Furthermore, in this section, we introduce the Sobolev space. In section 3, we explore the function analytic properties of the Sobolev space, which is what makes it so useful for PDEs, and discuss properties of weak derivatives. Furthermore, we will discuss approximations and extensions, theories which will be useful in our later discussions. The proofs in these sections are long and detailed; the reader should keep this in mind. In section 4, we discuss second-order elliptic PDEs. In section 5, we discuss parabolic PDEs. In both sections 4 and 5, we will use the theory of Sobolev spaces to derive fundamental results that are important in the discussion of PDE. 
+
+% The above section needs to be rewritten to reflect the changes made in this paper. In particular, the section must be changed to reflect the "main" sections, which are unchanged. The appendix must be added and the acknowledgements as well. 
+
+\section{Weak Derivatives.}
+\begin{remark}
+	For the remainder of this paper, let $\Omega \subset \mathbb{R}^n$ be a bounded and open set.
+\end{remark}
+We begin by first introducing the notation for multiindices, which will be useful for the remainder of the paper. 
+\begin{definition}
+	Let $\alpha$ be a multiindex such that $\abs{\alpha} \leq k$, the degree of the index. Then we define the partial differential operator
+	\begin{equation*}
+		D^{\alpha}(u) := \frac{d^{\alpha}}{dx_1^{\alpha_1}dx_2^{\alpha_2}\cdots dx_n^{\alpha_n}} u.
+	\end{equation*}
+\end{definition}
+\begin{definition}
+	Let $\alpha, \beta$ be any two multiindices of degree $k$. Then we define the following:
+	\begin{enumerate}
+		\item $\alpha \leq \beta$ if $\alpha_i \leq \beta_i$ for all $1 \leq i \leq k$. 
+		\item If $\alpha \leq \beta$, define the difference as $\alpha - \beta := \gamma = (\alpha_1 - \beta_1, \dots, \alpha_n - \beta_n)$.
+		\item Define the factorial of a multiindex as $\alpha! = \alpha_1!\dots \alpha_n!$.
+	\end{enumerate}
+\end{definition}
+We now define the \textit{test functions}, which will be used to motivate weak derivatives.  
+\begin{definition}
+	Let $C_c^\infty(\Omega)$ denote the space of all infinitely differentiable functions $\phi: \Omega \to \mathbb{R}$ that have compact support in $\Omega$. We call this $\phi \in C_c^{\infty}(\Omega)$ a test function.
+\end{definition}
+Suppose that we are given a function $u \in C^1(\Omega)$ and a test function $\phi$. Then, we notice that 
+\begin{equation*}
+	\displaystyle \int_{\Omega}{uD\phi \: dx} = -\int_{\Omega}{Du \phi \: dx}. 
+\end{equation*}
+The above result comes from integration by parts. Since $\phi$ has compact support in $\Omega$, it vanishes near the boundary, $\partial \Omega$. The above result can be generalized to functions that are $k$ times continuously differentiable. Let $u \in C^k(\Omega)$, $\alpha$ be a multiindex of degree $k$. Integrating by parts, we can see that 
+\begin{equation}
+	\label{definition of weak derivative}
+	\displaystyle \int_{\Omega}{uD^\alpha \phi \: dx} = (-1)^k\int_{\Omega}{D^\alpha u \phi \: dx}.
+\end{equation}
+We require that $u \in L_{\loc}(\Omega)$ so that the left hand side of the above equality holds for every test function $\phi$. The right hand side on the other hand, does not pose an issue as long as $u \in C^k(\Omega)$. The concept of a weak derivative arises when we seek functions $u$, that are not in $C^k(\Omega)$, such that the right hand side is valid. If we seek said functions, a fundamental issue must be tackled: how do we define the term $D^\alpha u$ if $u$ is not $k$ times continuously differentiable? We take advantage of this ambiguity to define the weak derivative. In the sequel, we assume that there exists a function $v \in L_{\loc}(\Omega)$ such that $D^\alpha u = v$, and use this assumption to define the weak derivative. 
+\begin{definition}
+	Let $u,v \in L_{\loc}(\Omega)$, $\alpha$ be a multiindex of degree $k$, and $\phi \in C_c^{\infty}(\Omega)$ be a test function. We call $v$ the $\alpha$-th partial derivative of $u$ if 
+	\begin{equation*}
+		\displaystyle \int_{\Omega}{uD^{\alpha} \phi \: dx} = (-1)^k \int_{\Omega}{v \phi \: dx}
+	\end{equation*}
+	for all test functions $\phi$. 
+\end{definition}
+To make notation easier, we will discuss properties of weak derivatives \textit{after} we define the Sobolev spaces. In the sequel, fix $1 \leq p \leq \infty$ and let $k \in \mathbb{N}$. We now define the Sobolev spaces, which are function spaces whose functions have weak derivatives up to certain orders. 
+\begin{definition}
+	The Sobolev space $W^{k,p}(\Omega)$ is the space consisting of all functions $u : \Omega \to \mathbb{R}, u \in L^p_{\loc}(\Omega)$ such that for each multiindex $\alpha$ with $\abs{\alpha} \leq k$, the weak derivative $D^\alpha u$ exists and is an element of $L^p(\Omega)$. In other words, 
+	\begin{equation*}
+		\displaystyle W^{k,p}(\Omega) = \left\{ u \in L_{\loc}^p(\Omega) : \norm{D^{\alpha}u}_{L^p(\Omega)} < \infty \: \forall \: \abs{\alpha} \leq k \right\}.
+	\end{equation*}
+\end{definition}
+In a similar manner, we can define the local Sobolev space. 
+\begin{definition}
+	Let $\omega \subset\subset \Omega$. Let $u : \Omega \to \mathbb{R}$ and $\alpha$ satisfy the same assumptions made in the previous definition. Then the local Sobolev space $W_{\loc}^{k,p}(\Omega)$ is the space consisting of all $u$ such that the weak derivative $D^{\alpha}u$ exists and is an element of $L^p(\omega)$, for any choice of $\omega$. In other words, 
+	 \begin{equation*}
+	 	\displaystyle W_{\loc}^{k,p}(\Omega) = \left\{ u \in L_{\loc}^p(\Omega) : \norm{D^{\alpha}u}_{L^p(\omega)} < \infty \: \forall \: \abs{\alpha} \leq k, \textrm{ for any arbitrary } \omega\right\}.
+	 \end{equation*}
+\end{definition}
+With the Sobolev spaces defined, we can now explore properties of weak derivatives, which will be explored in no particular order.
+\begin{theorem}
+	(Essential properties of weak derivatives). Let $u,v \in W^{k,p}(\Omega)$ and let $\alpha$ be a multiindex such that $\abs{\alpha} \leq k$. Then 
+	\begin{enumerate}
+		\item The weak derivative, if it exists, is unique. 
+		\item For each $\lambda, \mu \in \mathbb{R}, \lambda u + \mu v \in W^{k,p}(\Omega)$. Furthermore, $D^{\alpha}(\lambda u + \mu v) = \lambda D^{\alpha} u + \mu D^{\alpha}v$.
+		\item $D^{\alpha} u \in W^{k - \abs{\alpha},p}(\Omega)$.
+		\item $D^{\alpha}(D^{\beta} u) = D^{\beta}(D^\alpha u)$ provided that $\abs{\alpha} + \abs{\beta} \leq k$.
+		\item $D^{\alpha}(D^{\beta} u) = D^{\alpha + \beta}u$ provided that $\abs{\alpha} + \abs{\beta} \leq k$.
+		\item (Leibniz' Formula). Let $\xi \in C_c^{\infty}(\Omega)$ be a smooth and compactly supported function. Then $\xi u \in W^{k,p}(\Omega)$ and the explicit formula is given by
+		\begin{equation}
+			\label{weak derivative, leibniz formula}
+			\displaystyle D^\alpha (\xi u) = \sum\limits_{\beta \leq \alpha}{\binom{\alpha}{\beta}D^\beta\xi D^{\alpha - \beta}u}
+		\end{equation}
+		which is exactly Leibniz's formula for weak derivatives.  
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	(1). Let $w, \bar{w} \in L_{\loc}(\Omega)$ be two weak derivatives of $u$. Then 
+	\begin{equation*}
+		\displaystyle \int_{\Omega}{u D^{\alpha}\phi \: dx} = (-1)^{\abs{\alpha}}\int_{\Omega}{w\phi \: dx} = (-1)^{\abs{\alpha}}\int_{\Omega}{\bar{w}\phi \: dx}
+	\end{equation*}
+	and thus 
+	\begin{equation*}
+		\displaystyle \int_{\Omega}{(w - \bar{w})\phi \: dx} = 0
+	\end{equation*}
+	whence $(w - \bar{w}) = 0$ for all measurable sets $\Omega$. 
+	
+	(2). First, we show the linearity property. We write, 
+	\begin{align*}
+		\displaystyle \int_{\Omega}{(\lambda u + \mu v)D^\alpha \phi \: dx} &= \int_{\Omega}{\lambda u D^\alpha \phi \: dx} + \int_{\Omega}{\mu v D^\alpha \phi \: dx} \\
+		&= (-1)^{\abs{\alpha}}\int_{\Omega}{\lambda D^\alpha u \phi \: dx} + (-1)^{\abs{\alpha}}\int_{\Omega}{\mu D^\alpha v \phi \: dx} \\
+		&= (-1)^{\abs{\alpha}}\int_{\Omega}{(\lambda D^\alpha u + \mu D^{\alpha} v) \phi \: dx}
+	\end{align*}
+	by the linearity of integration. By integration by parts, we also write 
+	\begin{equation*}
+		\displaystyle \int_{\Omega}{(\lambda u + \mu v)D^\alpha \phi \: dx} = (-1)^{\abs{\alpha}}\int_{\Omega}{D^\alpha (\lambda u + \mu v) \phi \: dx}.
+	\end{equation*}
+	Hence, since the above two equalities hold for all test functions $\phi$, we have 
+	\begin{equation*}
+		\displaystyle D^{\alpha}(\lambda u + \mu v) = \lambda D^\alpha u + \mu D^\alpha v
+	\end{equation*}
+	in the weak sense, which is the desired result. Next, we show that the function $\lambda u + \lambda v$ is an element of $W^{k,p}$. It is trivial to conclude that if $u$ and $v$ are both locally integrable functions, then $\lambda u + \mu v$ is also a locally integrable function. To show that the weak derivative is bounded with respect to the $L^p$ norm, consider 
+	\begin{align*}
+		\displaystyle \norm{D^{\alpha}(\lambda u + \mu v)}_{L^p(\Omega)} &= \norm{\lambda D^\alpha u + \mu D^\alpha v}_{L^p(\Omega)} \\
+		&\leq \abs{\lambda} \norm{D^\alpha u}_{L^p(\Omega)} + \abs{\mu}\norm{D^\alpha v}_{L^p(\Omega)} \\
+		&< \infty
+	\end{align*}
+	where the inequality is due to Minkowski's inequality. The strict inequality follows from the assumption that $u,v \in W^{k,p}$.   
+	
+	(3) and (4) are easy to prove, and will be excluded.
+	
+	(5). We write 
+	\begin{align*}
+		\displaystyle \int_{\Omega}{D^\beta u D^\alpha \phi \: dx} &= (-1)^{\abs{\beta}}\int_{\Omega}{u D^{\alpha + \beta} \phi \: dx} \\
+		&= (-1)^{\abs{\beta}}(-1)^{\abs{\alpha + \beta}}\int_{\Omega}{D^{\alpha + \beta}u \phi \: dx} \\
+		&= (-1)^{\abs{\alpha}}\int_{\Omega}{D^{\alpha + \beta}u \phi \: dx}
+	\end{align*}
+	where the last step is obtained by observing that $\abs{\alpha} + \abs{\alpha + \beta} = 2\abs{\alpha} + \abs{\beta}$, and since $2\abs{\alpha}$ is always an even number, we conclude that $(-1)^{2\abs{\alpha}}(-1)^{\abs{\beta}} = (-1)^{\abs{\beta}}$. Thus we conclude that $D^\alpha(D^\beta u) = D^{\alpha + \beta}u$ in the weak sense. 
+	
+	(6). Let $\phi$ be a test function. We proceed by induction on $\abs{\alpha}$. For the base case, $\abs{\alpha} = 1$, we observe that 
+	\begin{equation*}
+		\displaystyle \int_{\Omega}{\xi u D^\alpha \phi \: dx} = \int_{\Omega}{uD^\alpha (\xi \phi) \: dx} - \int_{\Omega}{uD^\alpha \xi \phi \: dx} 
+	\end{equation*}  
+	which comes from applying Leibniz's formula for two smooth functions (since $\xi$ and $\phi$ are both smooth functions). Finally, since $\phi$ has compact support, the second integral above can be simplified using integration by parts, to obtain
+	\begin{align*}
+		\displaystyle \int_{\Omega}{\xi u D^\alpha \phi \: dx} &= -\int_{\Omega}{\xi D^\alpha u \phi \: dx} - \int_{\Omega}{uD^\alpha \xi \phi \: dx} \\
+		&= -\int_{\Omega}{(\xi D^\alpha u + u D^\alpha \xi )\phi \: dx}.
+	\end{align*}
+	Hence, $D^\alpha(\xi u) = \xi D^\alpha u + u D^\alpha \xi$ in the weak sense. Thus, the base case is proved. 
+		
+	We proceed to prove the induction step. Let $\ell < k$ and assume that the Leibniz formula holds for all $\abs{\alpha} \leq \ell$. Choose some multiindex $\alpha = \ell + 1$ and let $\abs{\beta} = \ell$ and $\abs{\gamma} = 1$ be two multiindices, so that $\abs{\alpha} = \abs{\beta} + \abs{\gamma}$. Then, 
+	\begin{align*}
+		\displaystyle \int_{\Omega}{\xi u D^\alpha \phi \: dx} &= \int_{\Omega}{\xi u D^\beta(D^\gamma \phi) \: dx} \\
+		&= (-1)^{\abs{\beta}}\int_{\Omega}{\sum\limits_{\sigma \leq \beta}{\binom{\beta}{\sigma}}D^\sigma \xi D^{\beta - \sigma}u D^\alpha \phi \: dx} \:\:\:\: \textrm{(induction hypothesis)} \\
+		&= (-1)^{\abs{\beta}+\abs{\gamma}}\int_{\Omega}{\sum\limits_{\sigma \leq \beta}{\binom{\beta}{\sigma}D^\gamma(D^\sigma \xi D^{\beta - \sigma}u)} \phi \: dx} \:\:\:\: \textrm{(definition)} \\
+		&= (-1)^{\abs{\alpha}}\int_{\Omega}{\sum\limits_{\sigma \leq \beta}{\binom{\beta}{\sigma}D^\gamma(D^\sigma \xi D^{\beta - \sigma}u)} \phi \: dx} \:\:\:\: \textrm{($\abs{\alpha} = \abs{\beta} + \abs{\gamma}$)} \\
+		&= (-1)^{\abs{\alpha}}\int_{\Omega}{\sum\limits_{\sigma \leq \beta}{\binom{\beta}{\sigma}\left[ D^{\sigma + \gamma}\xi D^{\beta - \sigma}u + D^\sigma \xi D^{\beta - \sigma + \gamma}u \right]}\phi \: dx}
+	\end{align*}
+	where we have again used the induction hypothesis. There is a common term $\sigma + \gamma$, so we will define $\rho = \sigma + \gamma$ for convenience. Thus, the above can be rewritten as 
+	\begin{align*}
+		\displaystyle \int_{\Omega}{\xi u D^\alpha \phi \: dx} &= (-1)^{\abs{\alpha}}\int_{\Omega}{\sum\limits_{\sigma \leq \beta}{\binom{\beta}{\sigma}\left[ D^{\rho}\xi D^{\alpha - \rho}u + D^\sigma \xi D^{\alpha - \sigma}u \right]}\phi \: dx} \\
+		&= (-1)^{\abs{\alpha}}\int_{\Omega}{I \phi \: dx}.
+	\end{align*}
+	Focusing only on the integrand $I$, we observe
+	\begin{align*}
+		\displaystyle I &= \sum\limits_{\sigma \leq \beta}{\binom{\beta}{\sigma}D^{\rho}\xi D^{\alpha - \rho}u} + \sum\limits_{\sigma \leq \beta}{\binom{\beta}{\sigma}D^\sigma \xi D^{\alpha - \sigma}u} \\
+		&= \sum\limits_{\rho \leq \alpha}{\binom{\beta}{\rho - \gamma}D^{\rho}\xi D^{\alpha - \rho}u} + \sum\limits_{\sigma \leq \beta}{\binom{\beta}{\sigma}D^\sigma \xi D^{\alpha - \sigma}u} \\
+		&= \sum\limits_{\sigma \leq \alpha}{\binom{\beta}{\sigma - \gamma}D^{\sigma}\xi D^{\alpha - \sigma}u} + \sum\limits_{\sigma \leq \beta}{\binom{\beta}{\sigma}D^\sigma \xi D^{\alpha - \sigma}u}
+	\end{align*}
+	where we have changed the dummy variable from $\rho$ to $\sigma$. Next, to collect like-terms, we pop out a term in the first summation. The second summation is left untouched. Thus, 
+	\begin{align*}
+		\displaystyle I &= \binom{\beta}{\beta}D^\alpha\xi D^{0}u + \sum\limits_{\sigma \leq \beta}{\binom{\beta}{\sigma - \gamma}D^\sigma\xi D^{\alpha - \sigma}u} + \sum\limits_{\sigma \leq \beta}{\binom{\beta}{\sigma}D^\sigma \xi D^{\alpha - \sigma}u} \\
+		&= \binom{\beta}{\beta}D^\alpha\xi D^{0}u + \sum\limits_{\sigma \leq \beta}{\left[\binom{\beta}{\sigma - \gamma}+\binom{\beta}{\sigma}\right]D^\sigma \xi D^{\alpha - \sigma}u} \\
+		&= \binom{\beta}{\beta}D^\alpha\xi D^{0}u + \sum\limits_{\sigma \leq \beta}{\binom{\alpha}{\sigma}D^\sigma \xi D^{\alpha - \sigma}u} 
+	\end{align*}
+	where we have used the elementary result 
+	\begin{equation*}
+		\displaystyle \binom{\beta}{\sigma - \gamma} + \binom{\beta}{\sigma} = \binom{\alpha}{\sigma}.
+	\end{equation*}
+	which is the recursive formula for the binomial coefficients. To complete the proof, we combine the terms with the summation. The loose term is exactly the summation evaluated when $\sigma = \alpha$. This justifies the combination. Thus,
+	\begin{equation*}
+		\displaystyle I = \sum\limits_{\sigma \leq \alpha}{\binom{\alpha}{\sigma}D^\sigma \xi D^{\alpha - \sigma}u}.
+	\end{equation*}
+	Finally, we can see that 
+	\begin{equation*}
+		\displaystyle \int_{\Omega}{\xi u D^\alpha \phi \: dx} = (-1)^{\abs{\alpha}}\int_{\Omega}{\sum\limits_{\sigma \leq \alpha}{\binom{\alpha}{\sigma}D^\sigma \xi D^{\alpha - \sigma}u} \phi \: dx}
+	\end{equation*}
+	which implies that 
+	\begin{equation*}
+		\displaystyle D^\alpha(\xi u) = \sum\limits_{\sigma \leq \alpha}{\binom{\alpha}{\sigma}D^\sigma \xi D^{\alpha - \sigma}u}
+	\end{equation*}
+	which is the desired result. With an explicit formula for the weak derivative in hand, it remains to show that, with respect to the $L^p(\Omega)$ norm, the weak derivative is bounded. For this portion of the proof, an application of Minkowski's inequality gives the desired result. 
+\end{proof}
+\section{Function Analytic Properties of Sobolev Spaces.}
+We move to examine the mathematical structure that the Sobolev space is equipped with, in particular it's function analytic properties. The Sobolev space is a linear vector space but it will be useful to view Sobolev spaces as \textit{normed} linear vector spaces. To motivate this development, we will eventually show that the Sobolev space is indeed, for each $1 \leq p \leq \infty$ and $k = 1,\dots$, a Banach space. 
+
+To begin our examination, we first define the norm that will be used in the sequel. 
+\begin{definition}
+	The norm of $u \in W^{k,p}(\Omega)$ is defined in the following manner.
+	\begin{equation*}
+		\displaystyle \norm{u}_{W^{k,p}(\Omega)} := \begin{cases}
+			\left( \sum_{\abs{\alpha} \leq k}{\norm{D^\alpha u}_{L^p(\Omega)}} \right)^{\nicefrac{1}{p}}, & 1 \leq p < \infty \\
+			\max_{\abs{\alpha}\leq k}{\left( \sum_{\abs{\alpha} \leq k}{\norm{D^\alpha u}_{L^\infty(\Omega)}} \right)}, & p = \infty.
+		\end{cases}
+	\end{equation*}
+\end{definition}
+Let us confirm that this is indeed a norm. 
+\begin{proof}
+	Let $u, v \in W^{k,p}(\Omega)$. It is quite clear that the above satisfies the positive definite property, since it relies on the $L^p$ norm. Furthermore, it is also clear that the above satisfies the absolute homogeneity property. The last property we need to show is the triangle inequality. For $1 \leq p \leq \infty$, the Minkowski's inequality implies 
+	\begin{align*}
+		\norm{u + v}_{W^{k,p}(\Omega)} &= \left( \sum_{\abs{\alpha}\leq k}{\norm{D^\alpha u + D^\alpha v}_{L^p(\Omega)}^p} \right)^{\nicefrac{1}{p}} \\
+		&\leq \left( \sum_{\abs{\alpha}\leq k}{\left\{\norm{D^\alpha u}_{L^p(\Omega)}^p + \norm{D^\alpha v}_{L^p(\Omega)}^p \right\}} \right)^{\nicefrac{1}{p}} \\
+		&\leq \left( \sum_{\abs{\alpha} \leq k}{\norm{D^\alpha u}_{L^p(\Omega)}^p} \right)^{\nicefrac{1}{p}} + \left( \sum_{\abs{\alpha} \leq k}{\norm{D^\alpha v}_{L^p(\Omega)}^p} \right)^{\nicefrac{1}{p}} \\
+		&= \norm{u}_{W^{k,p}(\Omega)} + \norm{v}_{W^{k,p}(\Omega)}.
+	\end{align*}
+	Hence, our definition of the norm is valid. 
+\end{proof}
+In order to show that the Sobolev space is a Banach space, we need to define convergence. 
+\begin{definition}
+	Let $u \in W^{k,p}(\Omega)$ and let $\left\{ u_m \right\}_{m = 1}^{\infty}$ be a sequence of functions. We say that $u_m \to u$ in $W^{k,p}(\Omega)$ if 
+	\begin{equation*}
+		\displaystyle \lim\limits_{m \to \infty}{\norm{u_m - u}_{W^{k,p}(\Omega)}} = 0. 
+	\end{equation*}
+\end{definition}
+A similar definition for local convergence in the Sobolev space is given by 
+\begin{definition}
+	Let $u \in W_{\loc}^{k,p}(\Omega)$ and let $\left\{ u_m \right\}_{m = 1}^{\infty}$ be a sequence of functions. We say that $u_m \to u$ in $W_{\loc}^{k,p}(\Omega)$ if 
+	\begin{equation*}
+		\displaystyle \lim\limits_{m \to \infty}{\norm{u_m - u}_{W_{\loc}^{k,p}(\Omega)}} = 0. 
+	\end{equation*}
+\end{definition}
+Furthermore, we can define the closure of the space in the following manner.
+\begin{definition}
+	We let $W^{k,p}_0(\Omega)$ denote the closure of $C_c^{\infty}(\Omega)$ in $W^{k,p}(\Omega)$. $W^{k,p}_0(\Omega)$ contains all functions $u$ such that there exists a function $u_m \in C_c^{\infty}(\Omega)$ such that $u_m \to u$ in $W^{k,p}(\Omega)$. 
+\end{definition}
+Intuitively, the space $W_0^{k,p}(\Omega)$ consists of all functions $u \in W^{k,p}(\Omega)$ such that the $\alpha^{th}$-weak derivative vanishes at the boundary $\partial \Omega$, for all $\abs{\alpha} \leq k - 1$. 
+
+With the norm and convergence in $W^{k,p}(\Omega)$ defined, we can now show that the Sobolev space is a Banach space.
+\begin{theorem}
+	For each $1 \leq p \leq \infty$ and $k = 1, \dots$, the Sobolev space $W^{k,p}(\Omega)$ is a Banach space. 
+\end{theorem} 
+\begin{proof}
+	Let $\left\{ u_m \right\}_{m=1}^{\infty}$ be a Cauchy sequence. Since the norm on the Sobolev space is defined with respect to the $L^p$ norm, it is clear that $\left\{ D^\alpha u_m \right\}_{m=1}^{\infty}$ is a Cauchy sequence in $L^p(\Omega)$. Now since $L^p(\Omega)$ is a \textit{complete} space, there exists a function $u_{\beta} \in L^p(\Omega)$ such that 
+	\begin{equation*}
+		\displaystyle D^\alpha u_m \to u_\beta \textrm{ in } L^p(\Omega)
+	\end{equation*}
+	for each multiindex $\alpha$ such that $\abs{\alpha} \leq k$. In particular, there exists a multiindex $\alpha = (0,\dots,0)$ such that, for $u \in L^p(\Omega)$, 
+	\begin{equation*}
+		\displaystyle u_m \to u_{\alpha} =: u \textrm{ in } L^p(\Omega). 
+	\end{equation*}
+	Let us furthermore assume that $u \in W^{k,p}(\Omega)$. Fixing some test function $\phi \in C^{\infty}_c(\Omega)$, we find that
+	\begin{align*}
+		\displaystyle \int_{\Omega}{uD^{\alpha}\phi \: dx} &= \lim\limits_{m \to \infty}{\int_{\Omega}{u_m D^\alpha \phi \: dx}} \\
+		&= \lim\limits_{m \to \infty}{(-1)^{\abs{\alpha}} \int_{\Omega}{D^\alpha u_m \phi \: dx}} \\
+		&= (-1)^{\abs{\alpha}} \int_{\Omega}{u_\beta \phi \: dx}
+	\end{align*}
+	for each multiindex $\alpha$ such that $\abs{\alpha} \leq k$. Thus,  
+	\begin{equation*}
+		\displaystyle D^\alpha u = u_\beta \textrm{ in } W^{k,p}(\Omega).
+	\end{equation*}
+	From this, we conclude that $D^\alpha u_m \to D^\alpha u$ and whenceforth $u_m \to u$. Thus, every Cauchy sequence in $W^{k,p}(\Omega)$ converges to a vector that is also in $W^{k,p}(\Omega)$, and so the space is complete. Since, the Sobolev space is a complete normed space, it is therefore a Banach space as required. 
+\end{proof}
+There is a deep connection between Sobolev spaces and Fourier Series. For the case where $p = 2$, we have that 
+\begin{equation*}
+	\displaystyle H^k(\Omega) = W^{k,2}(\Omega)
+\end{equation*}
+for $k = 1, \dots,$ where $H^k(\Omega)$ is the space of all functions that are in $L^2(\Omega)$ and whose weak derivatives up to an order $k$ are also in $L^2(\Omega)$. The letter $H$ is used because it is indeed a Hilbert space. The inner product with respect to $H^k(\Omega)$ is given by 
+\begin{equation*}
+	\displaystyle (f,g) = \int_{\Omega}{f\bar{g} + Df \cdot D\bar{g} + D^2f \cdot D^2\bar{g} + \cdots + D^k f  \cdot D^k \bar{g} \: dx}.
+\end{equation*}
+Note that if $k = 0$, then we have the classic $L^2(\Omega)$ space. For many physics and engineering students, when studying the Fourier series and Fourier transforms, the space $L^2(\Omega)$ space is commonly used as the underlying candidate space. 
+\subsection{Dense Subspaces of $W^{k,p}(\Omega)$.}
+We move to construct dense subspaces of $W^{k,p}(\Omega)$. By constructing dense subspaces, we will be able to approximate functions in the Sobolev space by elements of these dense subspaces. In particular, we will construct dense subspaces whose elements are smooth functions. The tool of mollifiers provides the mechanics we need to construct these dense subspaces. If you require a refresher course on mollifiers, refer to the appendix. 
+\begin{remark}
+	If $\Omega \subset \mathbb{R}^n$ is an open set, then let $\Omega_\epsilon = \left\{ x \in \Omega : \dist(x,\partial \Omega) > \epsilon \right\}$. 
+\end{remark}
+We start with a theorem that outlines a systematic procedure for local approximations by smooth functions. 
+\begin{theorem}
+	Assume that $u \in W^{k,p}(\Omega)$ for $1 \leq p < \infty$. Then, 
+	\begin{enumerate}
+		\item $u^\epsilon \in C^{\infty}(\Omega_\epsilon)$ for all $\epsilon > 0$. 
+		\item $u^\epsilon \to u$ in $W_{\loc}^{k,p}(\Omega)$, as $\epsilon \to 0$. 
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	(1). Proof of this statement is provided in the appendix. 
+	
+	(2). Proving this statement is equivalent to proving that 
+	\begin{equation*}
+		\displaystyle \norm{u^\epsilon - u}^p_{W_{\loc}^{k,p}(\Omega)} \to 0
+	\end{equation*}
+	as $\epsilon \to 0$. We first assert that the ordinary $\alpha^{th}$ derivative of the smooth function $u^\epsilon$ is the $\epsilon$-mollification of the $\alpha^{th}$-weak derivative of $u$.  That is, we wish to show that 
+	\begin{equation*}
+		\displaystyle D^\alpha u^\epsilon = \eta_\epsilon * D^\alpha u \textrm{ in } \Omega_\epsilon. 
+	\end{equation*}
+	To confirm this assertion, note that 
+	\begin{align*}
+		\displaystyle D^\alpha u^\epsilon &= D^\alpha \int_{\Omega}{\eta_\epsilon(x-y)f(y) \: dy} \\
+		&= \int_{\Omega}{D^\alpha_x \eta_\epsilon(x-y) f(y) \: dy} \\
+		&= (-1)^{\abs{\alpha}}\int_{\Omega}{D^{\alpha}_y\eta_\epsilon(x-y)u(y) \: dy}
+	\end{align*}
+	for some multiindex $\alpha$. Note that by fixing $x \in \Omega\epsilon$, we have that $\eta_\epsilon \in C_c^{\infty}(\Omega)$. Therefore, it is a test function. Continuing the above work, we have 
+	\begin{equation*}
+		\displaystyle \int_{\Omega}{D^\alpha_y \eta_\epsilon(x-y) u(y) \: dy} = (-1)^{\abs{\alpha}}\int_{\Omega}{\eta_\epsilon(x-y)D^\alpha u(y) \: dy}. 
+	\end{equation*}
+	Thus, 
+	\begin{equation*}
+		\displaystyle D^\alpha u^\epsilon = \int_{\Omega}{\eta_\epsilon(x-y) D^\alpha u(y) \: dy} = \eta_\epsilon * D^\alpha u
+	\end{equation*}
+	as desired. Finally, pick any $\omega \subset \subset \Omega$. Since $D^\alpha u^\epsilon = \eta_\epsilon * D^\alpha u$ and $u \in W^{k,p}(\Omega)$, we conclude that $D^\alpha u^\epsilon \to D^\alpha u$ in $L^p(\omega)$. Consequently, 
+	\begin{equation*}
+		\displaystyle \norm{u^\epsilon - u}_{W^{k,p}(\omega)}^p = \sum\limits_{\abs{\alpha} \leq k}{\norm{D^\alpha u^\epsilon - D^\alpha u}_{L^p(\omega)}^p} \to 0
+	\end{equation*}
+	as $\epsilon \to 0$, for all $\abs{\alpha} \leq k$. Since this is true for \textit{any} compact subset $\omega$ of $\Omega$, we conclude that 
+	\begin{equation*}
+		\displaystyle \norm{u^\epsilon - u}_{W_{\loc}^{k,p}(\Omega)}^p \to 0 
+	\end{equation*}
+	as $\epsilon \to 0$, which is the desired result. 
+\end{proof}
+It turns out, we can also find smooth functions that approximate functions in $W^{k,p}(\Omega)$, and not just in $W_{\loc}^{k,p}(\Omega)$. This is a nice property of Sobolev spaces as, in general, finding a global approximation is better than finding a local approximation. We will borrow ideas from our discussion of local approximations, to create an outline for global approximations. The following theorem sums this concept up. 
+\begin{theorem}
+	Assume that $\Omega$ is also bounded, and $u \in W^{k,p}(\Omega)$ for some $1 \leq p < \infty$. Then there exists functions $v \in C^{\infty}(\Omega) \cap W^{k,p}(\Omega)$ such that $v \to u$ in $W^{k,p}(\Omega)$. 
+\end{theorem}
+\begin{proof}
+	Our goal here is to essentially prove density. We will use mollification to prove density. We proceed by creating a smooth partition of unity. Let us partition $\Omega$ into different parts. 
+	Define
+	\begin{equation*}
+		\displaystyle \Omega_i := \left\{ x \in \Omega : \dist(x,\partial \Omega) \right\}.
+	\end{equation*}
+	Let us write $\omega_{i} = \Omega_{i+3} - \bar{\Omega}_{i+1}$. Next, choose some open set $\omega_0 \subset \subset \Omega$ so that 
+	\begin{equation*}
+		\displaystyle \Omega = \bigcup\limits_{i=1}^{\infty}{\omega_i}. 
+	\end{equation*}
+	Let us then define $\left\{\xi_i \right\}_{i=0}^{\infty}$ as the smooth partition of unity, subject to the conditions 
+	\begin{equation*}
+		\displaystyle \begin{cases}
+			0 \leq \xi_i \leq 1, & \textrm{ for } i = 0,1,\dots \\
+			\xi_i \in C_{c}^{\infty}(\omega_i), & \textrm{ for } i = 0,1,\dots \\
+			\sum\limits_{i=0}^{\infty}{\xi_i} = 1, & \textrm{ on } \Omega.
+		\end{cases}
+	\end{equation*} 
+	Pick up some $u \in W^{k,p}(\Omega)$. Recall, from our discussion of properties of weak derivatives, if $\xi_i$ is a function with compact support, then $\xi_i u \in W^{k,p}(\Omega)$. Furthermore, $\supp(\xi_i u) \subset \omega_i$. Define the function $u^i = \eta_{\epsilon_i} * \xi_i u$ as the mollification of $\xi_i u$ by $\eta_{\epsilon_i}$. 
+	
+	Define the set $\Gamma_i = \Omega_{i+4} - \bar{\Omega}_i$. Observe first, that $\omega_i \subset \gamma_i$ for all $i = 1,\dots$. We choose the $\gamma_i$ so that there is enough room to perform the mollification process. We know that the function $\xi_i$ has support in $\omega_i$, but we cannot say that $u^i$ has support in $\omega_i$. In fact, we require a slightly larger set, for which the set $\gamma_i$ does the job. 
+	
+	Now that we have determined that the function $u^i$ has support in $\Gamma_i$, we can use the previous theorem to determine that there exists some constant $C, \delta > 0$ and $\epsilon = \epsilon(C,\delta)$ such that 
+	\begin{equation*}
+		\norm{u^i - \xi_i u}_{W^{k,p}(\gamma_i)} \leq C\delta. 
+	\end{equation*}
+	Fix some $\delta > 0$ and choose an $\epsilon_i > 0$ small enough so that $u^i$ has support in $\gamma_i$ for $i = 1,\dots$. By the previous theorem, we have that 
+	\begin{equation*}
+		\displaystyle \norm{u^i - \xi_i u}_{W^{k,p}(\gamma_i)} \leq \frac{\delta}{3^{i+1}} \textrm{ for } i = 0,1,\dots
+	\end{equation*}
+	where the $C = \frac{1}{3^{i+1}}$ was chosen for convenience. Let us now define the function $v$ as
+	\begin{equation*}
+		\displaystyle v := \sum\limits_{i = 0}^{\infty}{u^i}. 
+	\end{equation*}
+	We note that this function $v \in C^{\infty}(\Omega) \cap W^{k,p}(\Omega)$ is a very smooth function since, for each open set $\omega \subset \subset \Omega$, there are at most finitely many nonzero terms in the summation. Additionally, we note that the function $v$ is also in the Sobolev space, since each $u^i$ is in the Sobolev space. Thus, for each compact subset $\omega \subset \subset \Omega$, we have that 
+	\begin{align*}
+		\displaystyle \norm{v - u}_{W^{k,p}(\omega)} &\leq \norm{v - u}_{W^{k,p}(\Omega)} \\
+		&= \norm{\sum\limits_{i=0}^{\infty}{u^i} - \sum\limits_{i = 0}^{\infty}{\xi_i u}}_{W^{k,p}(\Omega)} \\
+		&\leq \sum\limits_{i = 0}^{\infty}{\norm{u^i - \xi_i u}_{W^{k,p}(\Omega)}} \\
+		&\leq \delta\sum\limits_{i=0}^{\infty}{\frac{1}{3^{i+1}}} \\
+		&= \delta.
+	\end{align*}
+	Completing the proof, we take the supremum over all sets $\omega \subset \subset \Omega$ to conclude that 
+	\begin{equation*}
+		\displaystyle \norm{v-u}_{W^{k,p}(\Omega)} \leq \delta
+	\end{equation*} 
+	which is the desired result. 
+\end{proof}
+In the previous theorem, note that we did not make any assumptions about the boundary. However, in the next theorem, we will show that we can approximate a given function $u \in W^{k,p}(\Omega)$ not only by a function that is smooth in $\Omega$, but is smooth in the closure of $\Omega$. Such a claim requires that we assume the boundary is smooth enough. 
+\begin{theorem}
+	Assume that $\Omega$ is bounded and $\partial \Omega$ is $C^1$. Suppose that $u \in W^{k,p}(\Omega)$ for some $1 \leq p < \infty$. Then there exists functions $v \in C^{\infty}(\bar{\Omega})$ such that 
+	\begin{equation*}
+		\displaystyle u_m \to u \in W^{k,p}(\Omega).
+	\end{equation*}
+\end{theorem}
+The proof of this theorem is left to the appendix. 
+\subsection{The Space $W^{1,p}(\Omega)$.}
+
+% Include the results that were proved in the other paper when you present this section. This should be quite trivial. 
+For the remainder of the paper, we will derive results for the space $W^{1,p}(\Omega)$. These proofs can be extended to include the other values of $k$, but we will focus solely on the case $k = 1$ because it is particularly useful for our study of elliptic second-order PDEs. Additionally, the space $W^{1,p}(\Omega)$ possesses properties that do not hold if $k \neq 1$. 
+\subsection{Extensions of Sobolev Spaces.}
+In all of our previous discussions, we assumed that $\Omega \subset \mathbb{R}^n$. However, in the following theorem, we will show that for $k = 1$, we can actually extend the domain to be $\mathbb{R}^n$ instead. This is actually not an easy task to complete. An obvious extension that comes to mind is the extension where, if $u \in W^{1,p}(\Omega)$, we set $u(x) := 0$ for all $x \in \mathbb{R}^n \setminus \Omega$. We create a discontinuity that removes the property of weak differentiability. Thus, the extended function is no longer an element of $W^{1,p}(\Omega)$. 
+
+Extension theorems are crucial tools for studying PDEs. These theorems allow us to extend a function to a larger space via a linear, bounded, operator. The method of proving a result for a dense subset, and then using an extension theorem to extend the result to a larger space, is common in the analysis of PDEs. In fact, we will use this idea when discussing ways to assign values to the boundary. 
+\begin{theorem}
+	Assume that $\Omega$ is bounded and $\partial \Omega$ is $C^1$. Let $\omega$ be a bounded open set, $\omega \subset \subset \Omega$. There exists a bounded linear operator 
+	\begin{equation*}
+		\displaystyle E: W^{1,p}(\Omega) \to W^{1,p}(\mathbb{R}^n)
+	\end{equation*}
+	such that for each $u \in W^{k,p}(\Omega)$,
+	\begin{enumerate}
+		\item $Eu = u$ almost everywhere in $\Omega$
+		\item $\supp(Eu) \subset \omega$
+		\item $\norm{Eu}_{W^{1,p}(\mathbb{R}^n)} \leq C\norm{u}_{W^{1,p}(\Omega)}$ such that $C = C(p,\omega,\Omega)$. 
+	\end{enumerate}
+	We call $Eu$ an extension of $u$ to $\mathbb{R}^n$ by $E$. 
+\end{theorem}
+\begin{proof}
+	We will only consider the case when $1 \leq p < \infty$. For the case where $p = \infty$, we have the space of Lipschitz continuous functions, and the proof is monumentally easier. If the reader is interested in this case, then they should consult any text on Sobolev spaces. 
+	
+	Fix some $\hat{x} \in \partial \Omega$ and, though we will later consider the other case, let us assume that $\partial \Omega$ is flat near $\hat{x}$ and the boundary lies in the plane $\left\{x_n = 0\right\}$. Then, we may assume that there exists some open ball $B = B(\hat{x},r)$ such that 
+	\begin{equation*}
+		\displaystyle \begin{cases}
+			B^+ := B\cap\left\{x_n \geq 0 \right\} \subset \Omega \\
+			B^- := B\cap\left\{x_n < 0 \right\} \subset \mathbb{R}^n \setminus \Omega. 
+		\end{cases}
+	\end{equation*}
+	% Insert a figure here in order to show the reader what the situation comprises itself of. See research papers for more information on what the figure looks like. 
+	
+	Our goal is to eventually show that $u \in C^1(B)$. Let us first suppose that $u \in C^\infty(\bar{\Omega})$. Using the method of higher-order reflections, we construct the function $\bar{u}$ as 
+	\begin{equation*}
+		\displaystyle \bar{u}(x) := \begin{cases}
+			u(x), & x \in B^+ \\
+			-\frac{5}{3}u(x_1,\dots,x_{n-1},-x_n) + \frac{8}{3}u(x_1,\dots,x_{n-1},-\frac{x_{n}}{4}), & x \in B^-.
+		\end{cases}
+	\end{equation*}
+	This reflection was carefully constructed with the goal in mind. The reader should be aware that is is just one particular construction. Any other construction can work, but the construction should keep the goal in mind. 
+	
+	Proceeding with our goal, we introduce the two functions 
+	\begin{equation*}
+		\displaystyle u^+(x) := \bar{u}|_{B^+}, \:\:\: u^-(x) := \bar{u}|_{B^-}.
+	\end{equation*}
+	Hence, if we can show that $u^+_{x_n} = u^-_{x_n}$ and $u^+_{x_i} = u^-_{x_i}$ for $i = 1,\dots,n-1$ on $\left\{ x_n = 0 \right\}$, then the desired goal follows. 
+	
+	We confirm first that $u^+_{x_n} = u^-_{x_n}$ on $\left\{ x_n = 0 \right\}$. Indeed, by our definition of the reflection of $u$, we have 
+	\begin{equation*}
+		\displaystyle \frac{\partial u^-}{\partial x_n}(x) = \frac{5}{3}\frac{\partial u}{\partial x_n}(x_1,\dots,x_{n-1},-x_n) - \frac{2}{3}\frac{\partial u}{\partial x_n}(x_1,\dots,x_{n-1},-\frac{x_n}{4})
+	\end{equation*}
+	and by our definition of $u^-$, we observe
+	\begin{equation*}
+		\displaystyle \frac{\partial u^-}{\partial x_n}(x) = \frac{\partial u}{\partial x_n}(x_1,\dots,x_{n-1},x_n) = \frac{\partial u^+}{\partial x_n}.
+	\end{equation*}
+	This confirms our assumption. 
+	
+	Next, we note that for any $i = 1,\dots, x_{n-1}$, we observe that 
+	\begin{equation*}
+		\displaystyle \frac{\partial u^-}{\partial x_i}(x) = -\frac{5}{3}\frac{\partial u}{\partial x_i}(x_1,\dots,x_{n-1},-x_n) + \frac{8}{3}\frac{\partial u}{\partial x_i}(x_1,\dots,x_{n-1},-\frac{x_n}{4})
+	\end{equation*}
+	so that
+	\begin{equation*}
+		u_{x_i}^- = u_{x_i}^+ 
+	\end{equation*}
+	on $\left\{x_n = 0\right\}$. This confirms our assumption. 
+	
+	Combining the above two results, it is easy to see that for any multiindex $\alpha$ with $\abs{\alpha} \leq 1$, 
+	\begin{equation*}
+		\displaystyle D^\alpha u^-|_{\left\{x_n=0\right\}} = D^{\alpha} u^+|_{\left\{x_n=0\right\}}.
+	\end{equation*} 
+	
+	In the previous case, we assumed that $\partial \Omega$ was flat. Let us consider the case where the boundary is not flat. Suppose that the boundary is still $C^1$, but it is not flat. Pick up any $\hat{x} \in \partial \Omega$. Recall from calculus that there exists a $C^1$ mapping $\phi$ with an inverse, $\psi$ such that the mapping $\phi$ straightens out the boundary near the point $\hat{x}$. 
+	
+	Let $U$ denote the mapping of the ball. That is, $U = \phi(B)$. Write $y = \phi(x)$ and $x = \psi(y)$ so that $\hat{u}(y) = u(\psi(y))$. Then, construct a small ball $\hat{B}$, just like we did before. Finally, proceed in the same manner as we did before, when we assumed that the boundary was flat near $\hat{x}$. 
+	
+ 	Next, we claim that 
+ 	\begin{equation*}
+ 		\displaystyle \norm{\bar{u}}_{W^{1,p}(B)} \leq C \norm{u}_{W^{1,p}(B^+)}
+ 	\end{equation*}
+ 	where the constant $C$ is independent of $u$. We verify this claim. Observe that
+ 	\begin{align*}
+	 	\displaystyle \int_{B}{\abs{D\bar{u}}^p \: dx} &= \int_{B^+}{\abs{D\bar{u}}^p \: dx} + \int_{B^-}{\abs{D\bar{u}}^p \: dx} \\
+	 	&= \int_{B^+}{\abs{Du}^p \: dx} + \int_{B^-}{\abs{D\bar{u}}^p \: dx}.
+ 	\end{align*}
+ 	For $x \in B^-$, we can use the definition to explicitly calculate $D\bar{u}$. It is given by 
+ 	\begin{equation*}
+ 		\displaystyle \abs{D\bar{u}}^p \leq \left(\tfrac{5}{3}\right)^{p}\abs{Du(x_1,\dots,-x_n)}^p + \left(\tfrac{8}{3}\right)^p\abs{Du(x_1,\dots,-\nicefrac{x_n}{4})}^p.
+ 	\end{equation*}
+ 	The inequality is due to the scaling factor in front of $-x_n$. Finally, making a change of variables and multiplying by the Jacobian, we see that 
+ 	\begin{equation*}
+ 		\displaystyle \int_{B^-}{\abs{D\bar{u}} \: dx} \leq \int_{B^+}{\left(\tfrac{5}{3}\right)^{p}\abs{Du(x_1,\dots,x_n)}^p \: dx} + \int_{B^+}{4\left(\tfrac{8}{3}\right)^p\abs{Du(x_1,\dots,x_n)} \: dx} 
+ 	\end{equation*}
+ 	so that 
+ 	\begin{equation*}
+ 		\displaystyle \int_{B}^{\abs{D\bar{u}}^p \: dx} \leq \left( 1 + \left(\tfrac{5}{3}\right)^p + 4\left(\tfrac{8}{3}\right)^p \right)\int_{B^+}{\abs{Du}^p \: dx}.
+ 	\end{equation*}
+ 	It then follows that 
+ 	\begin{equation*}
+ 		\displaystyle \norm{\bar{u}}_{W^{1,p}(B)} \leq C\norm{u}_{W^{1,p}(B^+)}
+ 	\end{equation*}
+ 	which asserts the validity of the claim. 
+ 	
+ 	Without loss of generality, we will assume that the boundary is not straight. Using the notation and language in the previous paragraphs, we let $W:=\psi(B)$. Furthermore, we observe that 
+ 	\begin{equation*}
+ 		\displaystyle \norm{u}_{W^{1,p}(B^+)} \leq \norm{u}_{W^{1,p}(\Omega)}. 
+ 	\end{equation*}
+ 	To verify this, consider 
+ 	\begin{equation*}
+ 		\displaystyle \int_{\Omega}{\abs{Du}^p \: dx} = \int_{B^+}{\abs{Du}^p \: dx} + \int_{\Omega \setminus B^+}{\abs{Du}^p \: dx}. 
+ 	\end{equation*}
+ 	For the second integral, note that $\Omega \setminus B^+ \subset \Omega$ and is bounded. Call this new set $U$. Then, 
+ 	\begin{equation*}
+ 		\displaystyle \int_{U}{\abs{Du}^{p} \: dx} = \norm{u}_{W^{1,p}(U)}^p 
+ 	\end{equation*}
+ 	which by our definition of the norm, this is strictly positive and bounded. Thus, 
+ 	\begin{equation*}
+ 		\displaystyle \int_{B^+}{\abs{Du}^p \: dx} \leq \int_{\Omega}{\abs{Du}^p \: dx} 
+ 	\end{equation*}
+ 	from which our claim follows. From these above calculations, and with the ultimate goal in mind, we have the inequality 
+ 	\begin{equation*}
+ 		\displaystyle \norm{\bar{u}}_{W^{1,p}(W)} \leq C\norm{u}_{W^{1,p}(\Omega)}
+ 	\end{equation*}
+ 	where the constant $C$ does not depend on the function $u$.
+ 	
+ 	Up until this point, we outlined a procedure for extending one point on the boundary. But we assumed that the boundary was compact, and therefore there are a finite number of points $\hat{x}_i$, open sets $W_i$ and extensions $\bar{u}_i$ of $u$ to $W_i$ as done in the procedure above. Assuming that there are $N$ points for which this can be done, we require that the boundary can be reconstructed by taking the union of open sets. Next, let us choose some $W_0$ so that 
+ 	\begin{equation*}
+ 		\displaystyle \Omega \subset \bigcup\limits_{i=0}^{N}{W_i}
+ 	\end{equation*}
+ 	and let $\left\{ \xi_i \right\}_{i=0}^{N}$ be the associated partition of unity. Define the function 
+ 	\begin{equation*}
+	 	\displaystyle \bar{u} = \sum\limits_{i=0}^{\infty}{\xi_i \bar{u}_i}. 
+ 	\end{equation*}
+ 	Then, we observe that
+ 	\begin{align*}
+ 		\displaystyle \norm{\bar{u}}_{W^{1,p}(\mathbb{R}^n)} &= \norm{\bar{u_0}\xi_0 + \bar{u}_1\xi_1 + \cdots + \bar{u}_N\xi_N}_{W^{1,p}(\mathbb{R}^n)} \\
+ 		&\leq \norm{\bar{u}_0\xi_0}_{W^{1,p}(\mathbb{R}^n)} + \norm{\bar{u}_1\xi_1}_{W^{1,p}(\mathbb{R}^n)} + \cdots + \norm{\bar{u}_N\xi_N}_{W^{1,p}(\mathbb{R}^n)} \\
+ 		&= \norm{\bar{u}_0\xi_0}_{W^{1,p}(W_0)} + \norm{\bar{u}_1\xi_1}_{W^{1,p}(W_1)} + \cdots + \norm{\bar{u}_N\xi_N}_{W^{1,p}(W_N)} \\
+ 		&= C_0(\xi_0)\norm{u}_{W^{1,p}(\Omega)} + C_1(\xi_1)\norm{u}_{W^{1,p}(\Omega)} + \cdots + C_N(\xi_N)\norm{u}_{W^{1,p}(\Omega)} \\
+ 		&= C\left( \xi_0,\xi_1,\dots,\xi_n \right)\norm{u}_{W^{1,p}(\Omega)}. 
+ 	\end{align*}
+ 	In the third step, we have used that the $\xi_i$ have support in $W_i$. In the fourth step, we have used the definition of $\bar{u}$ and pulled out the $\xi_i$ and absorbed it into a constant. In the final step, we have combined all the constants into one large constant that is independent of $u$. This confirms the inequality.
+ 	
+ 	Finally, we define $Eu := \bar{u}$. Note that in the beginning of the proof, we assumed that $u \in C^1(\bar{\Omega})$. This is not necessary. Choose some $u_m \in C^\infty(\Omega)$ that converges to $u$ in $W^{1,p}(\Omega)$. This is made possible by the approximation theorems that were developed in the section. Then we note that the linearity of $E$ and the estimate gives 
+ 	\begin{align*}
+ 		\displaystyle \norm{Eu_m - Eu_l}_{W^{1,p}(\mathbb{R}^n)} &= \norm{E(u_m - u_l)}_{W^{1,p}(\mathbb{R}^n)} \\
+ 		&\leq C\norm{u_m - u_l}_{W^{1,p}(\Omega)}
+ 	\end{align*}
+ 	which shows that $\left\{ Eu_m \right\}_{m = 1}^{\infty}$ is a Cauchy sequence. This Cauchy sequence converges to $\bar{u}$, which we have defined as $Eu$. It should be noted that this estimate was independent of the sequence $\left\{u_m \right\}_{m=1}^{\infty}$.
+ 	% Finish up the rest of this proof. Perhaps use the Cauchy sequence property. 
+ 	
+ 	The conclusions of the theorem follow directly from the above work. 
+\end{proof}
+In the above theorem, we assumed that the boundary was $C^1$. If the boundary were, or rather we required that it to be, $C^2$, then the proof would follow in the same manner but the choice of the reflection would be different. Regardless, without proof, the following bound can be derived. 
+\begin{equation*}
+	\displaystyle \norm{Eu}_{W^{2,p}(\mathbb{R}^n)} \leq \norm{u}_{W^{2,p}(\Omega)}.
+\end{equation*}
+For the case where $k>2$, the above proof serves as an outline, though the reflection will have to be carefully constructed. I encourage the reader, if they understand how the coefficients in the higher-order reflection were chosen, to attempt the proof. 
+
+\subsection{Traces.}
+We move to discuss the possibility of assigning values to $u \in W^{1,p}(\Omega)$ for points on $\partial \Omega$. The reason we want to assign values to the boundary is because later on we will study boundary-value problems, which constitute the majority of real-world problems. The issue is that the function $u$ can be discontinuous at the boundary, since we only assumed that $u \in W^{1,p}(\Omega)$ and not necessarily on the closure of $\Omega$. The notion of the \textit{trace operator} allows us to assign values on the boundary, without introducing discontinuities. 
+\begin{theorem}
+	Assume that $\Omega$ is bounded and $\partial \Omega$ is $C^1$. Then there exists a bounded linear operator 
+	\begin{equation*}
+		\displaystyle T: W^{1,p}(\Omega) \to L^p(\partial \Omega)
+	\end{equation*}
+	such that the following are satisfied:
+	\begin{enumerate}
+		\item $Tu = u|_{\partial \Omega}$ if $u \in W^{1,p}(\Omega) \cap C(\bar{\Omega})$
+		\item $\norm{Tu}_{L^p(\partial \Omega)} \leq C \norm{u}_{W^{1,p}(\Omega)}$ where $C = C(p,\Omega)$ is independent of $u$.
+	\end{enumerate}
+	If such a linear operator exists, then we call $Tu$ the trace of $u$ on $\partial \Omega$. 
+\end{theorem}
+\begin{proof}
+	The first property will be proved in proving the second property. From elementary functional analysis, we know that if $T$ is a bounded linear operator, then $T$ must be a continuous mapping. Thus, we will focus on showing that $T$ is a continuous mapping, and derive the desired result in the process. 
+	
+	Borrowing upon the ideas from the previous proof, we suppose that if $\partial \Omega$ is not flat on $\left\{ x_{n} = 0 \right\}$, then we flatten it out using an injective mapping $\phi$, with inverse $\psi$. If $\partial \Omega$ is already flat on $\left\{x_n = 0\right\}$, then we do not have to perform the flattening procedure.
+	
+	Assume that $u \in C^1(\bar{\Omega})$. Pick up some $\hat{x} \in \partial \Omega$. Let $B = B(\hat{x}, r)$ and $\widehat{B} = B(\hat{x},r/2)$ be the ball of radius $r$ and $r/2$, respectively, centered around $\hat{x}$. As with the previous proof, let us define 
+	\begin{equation*}
+		\displaystyle \begin{cases}
+			B^+ := B \cap \left\{ x_n \geq 0 \right\} \subset \Omega \\
+			B^- := B \cap \left\{ x_n < 0 \right\} \subset \mathbb{R}^n \setminus \Omega
+		\end{cases}
+	\end{equation*}
+	and
+	\begin{equation*}
+		\displaystyle \begin{cases}
+			\widehat{B}^+ := \widehat{B} \cap \left\{ x_n \geq 0 \right\} \subset B^+ \subset \Omega \\
+			\widehat{B}^+ := \widehat{B} \cap \left\{ x_n < 0 \right\} \subset \mathbb{R}^n \setminus \Omega.
+		\end{cases}
+	\end{equation*}
+	Let us denote, by $\Gamma$, the set 
+	\begin{equation*}
+		\displaystyle \Gamma := \left\{ x | x \in \widehat{B}^+ \cap \left\{x_n = 0\right\} \right\}.
+	\end{equation*}
+	Let us pick up some $\xi\in C^\infty_c(B)$ where $\xi \geq 0$ and $\xi \equiv 1$ on $\widehat{B}^+$. Let us denote $x' = (x_1,\dots,x_{n-1}) \in \mathbb{R}^{n-1}$. Then, we observe that 
+	\begin{align*}
+		\displaystyle \int_{\Gamma}{\abs{u}^p \: dx'} &\leq \int_{\left\{x_n=0\right\}}{\xi \abs{u}^p \: dx'} \\
+		&= -\int_{B^+}{(\xi \abs{u}^p)_{x_n}\: dx} \\
+	 	&= -\int_{B^+}{\xi_{x_n}\abs{u} + p\abs{u}^{p-1}\sgn(u)u_{x_n}\xi \: dx} \\
+	 	&= I + J
+	\end{align*}
+	where $\sgn(u)$ is the sign of $u$. The first step comes from using the positivity of $\xi$ in $B^+$. The second step comes from the fundamental theorem of calculus, and noting that the function $\xi$ has compact support in $B$. The third step is attained by an explicit expansion of the previous step. 
+	
+	Since $\xi_{x_n}$ is a compactly-supported and smooth function, it attains a maximum inside $B^+$. Thus, 
+	\begin{equation*}
+		\displaystyle -\int_{B^+}{\xi_{x_n} \abs{u}^p \: dx} \leq -\max\limits_{x}{(\xi_{x_n})}\int_{B^+}{\abs{u}^p \: dx} = C_0 \int_{B^+}{\abs{u}^p \: dx}.
+	\end{equation*}
+	For the second integral, we observe that 
+	\begin{align*}
+		\displaystyle -\int_{B^+}{p\abs{u}^{p-1} \sgn(u)u_{x_n}\xi \: dx} &\leq -\max\limits_{x}{(\xi)}\sgn(u)\int_{B^+}{p\abs{u}^{p-1}u_{x_n} \: dx} \\
+		&\leq C_1\int_{B^+}{p\abs{u}^{p-1}\abs{u_{x_n}} \: dx} \\
+		&\leq C_1\int_{B^+}{p\abs{u}^{p-1}\abs{Du} \: dx}
+	\end{align*}
+	where $Du$ denotes the full gradient. The first step comes from noting that $\xi$ is a smooth, continuous function. The second step comes from the fact that $u_{x_n} \leq \abs{u_{x_n}}$. The third step comes from noting that $\abs{u_{x_n}} \leq \abs{Du}$. Next, let $q = \frac{p}{p-1}$ so that $\tfrac{1}{q} + \tfrac{1}{p} = 1$. Then, employing Young's inequality, we observe that 
+	\begin{equation*}
+		\displaystyle p\abs{u}^{p-1}\abs{Du} \leq \frac{p\abs{u}^{q(p-1)}}{q} + \frac{p\abs{Du}^p}{p} = (p-1)\abs{u}^{p} + \abs{Du}^p. 
+	\end{equation*}
+	Thus, we observe that 
+	\begin{equation*}
+		\displaystyle -\int_{B^+}{p\abs{u}^{p-1} \sgn(u)u_{x_n}\xi \: dx} \leq C_1\int_{B^+}{(p-1)\abs{u}^p + \abs{Du}^p \: dx}.
+	\end{equation*}
+	Combining the above calculations, we can see that 
+	\begin{align*}
+		\displaystyle \int_{\Gamma}{\abs{u}^p \: dx'} &\leq C_0 \int_{B^+}{\abs{u}^p \: dx} + C_1\int_{B^+}{(p-1)\abs{u}^p + \abs{Du}^p \: dx} \\
+		&= (C_0 + C_1(p-1))\int_{B^+}{\abs{u}^p \: dx} + C_1 \int_{B^+}{\abs{Du}^p \: dx}.
+	\end{align*}
+	
+	Borrowing again from ideas in the previous proof, we note that since $\partial \Omega$ is a compact set, there exists finitely many points $\hat{x}_i \in \partial \Omega$ and open subsets $\Gamma_i$, for $i = 1,\dots,N$, such that the boundary can be recovered from taking the union of these subsets. For each $i$, using the above result, we conclude that 
+	\begin{equation*}
+		\displaystyle \norm{u}_{L^p(\Gamma_i)} \leq C\norm{u}_{W^{1,p}(\Omega)}. 
+	\end{equation*}
+	
+	We can then define $Tu := u|_{\partial \Omega}$ so that in the above bound, we have
+	\begin{equation*}
+		\displaystyle \norm{Tu}_{L^p(\Gamma_i)} \leq C\norm{u}_{W^{1,p}(\Omega)}
+	\end{equation*}
+	where $C$ is a constant that does not depend on $u$. Note that the mapping $T$ is a linear mapping. 
+	
+	The inequality was derived, assuming that $u \in C^1(\bar{\Omega})$. In fact, this requirement might be too stringent, so we loosen it using the approximation theorems developed in the previous sections. Assume now that $u \in W^{1,p}(\Omega)$. Then pick up some $u_m \in C^\infty(\bar{\Omega)}$ such that $u_m \to u$ in $W^{k,p}(\Omega)$. According to our results, we have 
+	\begin{align*}
+		\displaystyle \norm{Tu_m - Tu_l}_{L^p(\partial \Omega)} &= \norm{T(u_m - u_l)}_{L^p(\partial \Omega)} \\
+		&\leq C\norm{u_m - u_l}_{W^{1,p}(\Omega)}.
+	\end{align*}
+	This shows that $\left\{Tu_m\right\}_{m=1}^{\infty}$ is a Cauchy sequence in $L^p(\partial \Omega)$. Thus, we define 
+	\begin{equation*}
+		\displaystyle Tu := \lim\limits_{m \to \infty}{Tu_m}.
+	\end{equation*}
+	This is true, regardless of our choice of the $u_m$ that we have chosen to approximate the function $u$. Hence, the mapping $T$ is bounded, linear, and continuous. 
+	
+	To conclude this proof, we notice that if the function $u$ is in the Sobolev space and it is also smooth on the boundary, then the $u_m$ converge to $u$ uniformly on $\bar{\Omega}$. Hence, we can say that $Tu := u|_{\partial \Omega}$ if $u \in W^{1,p}(\Omega) \cap C(\bar{\Omega})$.
+\end{proof}
+Later on, we will study elliptic and parabolic boundary-value problems, with the homogeneous boundary condition. In order to understand the boundary condition, we need to first understand what it means for a function to have a zero trace. The following theorem sums this up.
+\begin{theorem}
+	Assume that $\Omega$ is bounded and $\partial \Omega$ is $C^1$. Furthermore, suppose that $u \in W^{1,p}(\Omega)$. Then 
+	\begin{equation*}
+		\displaystyle Tu = 0 \iff u \in W^{1,p}_0(\Omega). 
+	\end{equation*} 
+	That is to say, $u$ must be in the closure of $C^\infty_c(\Omega)$ in $W^{1,p}(\Omega)$, for the trace of $u$ to be identically zero. 
+\end{theorem}
+\begin{proof}
+	Let us prove the forward statement. Suppose that $u \in W^{1,p}_0(\Omega)$. Recall that the space $W^{1,p}_0(\Omega)$ is the closure of $C^\infty_c(\Omega)$ in $W^{1,p}(\Omega)$. Thus, by definition, there exist functions $u_m \in C^\infty_c(\Omega)$ such that $u_m \to u$ in $W^{1,p}(\Omega)$. If $Tu_m = 0$, then by the continuity, linearity, and boundedness of $T$, we deduce that $Tu = 0$ in $\partial \Omega$. 
+	
+	The other statement is a little harder to prove. Let us suppose that $Tu = 0$ on $\partial \Omega$. 
+\end{proof}
+\subsection{Sobolev Embeddings.}
+
+% Note for tomorrow. In particular, we want to find some sort of embedding of the Sobolev space in the L^p space. The reasoning for this is very clear. There are many results in L^p theory, so we would like to create some sort of embedding. 
+We move to discuss embeddings of Sobolev spaces into other function spaces. These results will give rise to so-called Sobolev-type inequalities. These inequalities will establish estimates for aribitrary functions in the Sobolev space. These results will be utilized later, when we study second-order partial differential equations. 
+
+The motivation for finding embeddings of Sobolev spaces into other function spaces is so that if we have a function $u \in W^{1,p}(\Omega)$, then is there a way to automatically say that $u$ belongs to another function space as well? The answer is yes for certain choices of $p$. One particular embedding we will consider is the embedding of $W^{1,p}(\Omega)$ in $L^q(\Omega)$, for particular values of $q$. We desire to establish embeddings of Sobolev spaces into $L^p$ spaces because there is a lot of theory surrounding $L^p$ spaces. As such, if we can establish that a function $u$ is in a Sobolev space, then it automatically belongs to an $L^p$ space, hence can apply results from $L^p$ theory. 
+
+Let $1 \leq p < n$. We can develop an estimate that bounds the norm of $u$ in terms of $Du$, each with respect to different norms. In particular, we have that 
+\begin{equation}
+	\label{sobolev embeddings, assumed estimate}
+	\displaystyle \norm{u}_{L^q(\mathbb{R}^n)} \leq C\norm{Du}_{L^p(\mathbb{R}^n)}
+\end{equation}
+for some constant $C > 0$ that is independent of $u \in C^\infty_c(\mathbb{R}^n)$, and $1 \leq q < \infty$. The above estimate does not hold for arbitrary choices of $q$. In fact, the estimate only holds for particular values of $q$. Consider the following argument. Let us pick some function $u \in C^{\infty}_c(\mathbb{R})$, such that $u \not\equiv 0$, and define for $\delta > 0$, the scaled function
+\begin{equation*}
+	\displaystyle u_\delta(x) := u(\delta x).
+\end{equation*}
+Next, observe that 
+\begin{align*}
+	\displaystyle \int_{\mathbb{R}^n}{\abs{u_\delta}^q \: dx} &= \int_{\mathbb{R}^n}{\abs{u(\delta x)}^q \: dx} \\
+	&= \frac{1}{\delta^n}\int_{\mathbb{R}^n}{\abs{u(y)}^q \: dy}
+\end{align*}
+where we have made a change of variables in the last step. Similarly, observe that 
+\begin{align*}
+	\displaystyle \int_{\mathbb{R}^n}{\abs{Du_\delta}^p \: dx} &= \int_{\mathbb{R}^n}{\abs{Du(\delta x)}^p \: dx} \\
+	&= \frac{\delta^p}{\delta^n}\int_{\mathbb{R}^n}{\abs{Du(y)}^p \: dy}.
+\end{align*}
+Plugging these into (\ref{sobolev embeddings, assumed estimate}), we find that 
+\begin{equation*}
+	\displaystyle \frac{1}{\delta^{n/q}}\norm{u}_{L^q(\mathbb{R}^n)} \leq C\frac{\delta}{\delta^{n/p}}\norm{Du}_{L^p(\mathbb{R}^n)}
+\end{equation*}
+and thus 
+\begin{equation}
+	\label{sobolev embeddings, estimate to reach contradiction}
+	\displaystyle \norm{u}_{L^q(\mathbb{R}^n)} \leq C\delta^{1-\tfrac{n}{p}+\tfrac{n}{q}}\norm{Du}_{L^p(\mathbb{R}^n)}.
+\end{equation}
+If $1 - \tfrac{n}{p} + \tfrac{n}{q} \neq 0$, then we can obtain a contradiction by sending $\delta$ either to $0$ or $\infty$ in (\ref{sobolev embeddings, estimate to reach contradiction}). Thus, for (\ref{sobolev embeddings, assumed estimate}) to hold, we require that 
+\begin{equation*}
+	\displaystyle 1 - \frac{n}{p} + \frac{n}{q} = 0
+\end{equation*}
+so that, with a little rearranging, we obtain the requirement that
+\begin{equation*}
+	\displaystyle q = \frac{np}{n-p}. 
+\end{equation*}
+In the theory of Sobolev spaces, this is called the \textit{Sobolev conjugate}. Thus, if an estimate like (\ref{sobolev embeddings, assumed estimate}) holds, then it only holds for that specific choice of $p$. We now move to show the validity of this estimate, which is summarized in the following theorem.
+\begin{theorem}
+	(Gagliardo-Nirenberg-Sobolev Inequality). Let $1 \leq p \leq n$. Then there exists a constant $C = C(p, n)$ such that
+	\begin{equation*}
+		\displaystyle \norm{u}_{L^{p^*}(\mathbb{R}^n)} \leq C\norm{Du}_{L^p(\mathbb{R}^n)}
+	\end{equation*}
+	for all $u \in C^1_c(\mathbb{R}^n)$, where $p^*$ is the Sobolev conjugate given by 
+	\begin{equation*}
+		\displaystyle p^* := \frac{np}{n-1}.
+	\end{equation*} 
+\end{theorem}
+\begin{proof}
+	Suppose that $p = 1$. Then for each $i = 1,\dots,n$ and $x \in \mathbb{R}^n$, we observe
+	\begin{equation*}
+		\displaystyle u(x) = \int_{-\infty}^{x_i}{u_{x_i}(x_1,\dots,y_i,\dots,x_n) \: dy_i}
+	\end{equation*}
+	which comes from the fundamental theorem of calculus. Notice that we have also used the fact that $u$ has compact support, so that it vanishes near the boundary. If $Du$ denotes the full derivative of $u$, then we can clearly see that 
+	\begin{equation*}
+		\displaystyle \abs{u(x)} \leq \int_{-\infty}^{\infty}{\abs{Du(x_1,\dots,y_i,\dots,x_n)} \: dy_i}
+	\end{equation*}
+	for each $i$. Thus if we apply the above inequality for each $i$, we find that 
+	\begin{equation*}
+		\displaystyle \abs{u(x)}^n \leq \prod\limits_{i = 1}^{n}{\left( \int_{-\infty}^{\infty}{\abs{Du(x_1,\dots,y_i,\dots,x_n)} \: dy_i} \right)}
+	\end{equation*}
+	so that 
+	\begin{equation*}
+		\displaystyle \abs{u(x)}^{\tfrac{n}{n-1}} \leq \prod\limits_{i = 1}^{n}{\left( \int_{-\infty}^{\infty}{\abs{Du(x_1,\dots,y_i,\dots,x_n)} \: dy_i} \right)^{\tfrac{1}{n-1}}}.
+	\end{equation*}
+	For convenience, I will use the shorthand notation $Du = Du(x_1,\dots,y_i,\dots,x_n)$. Similarly, we will define for convenience, 
+	\begin{equation*}
+		\displaystyle \alpha = \frac{n}{n-1}, \: \beta = \frac{1}{n-1}
+	\end{equation*} 
+	Our goal is to turn the left hand side to look like the $L^q(\mathbb{R}^n)$ norm. With this in mind, we integrate both sides with respect to $x_1$, to obtain
+	\begin{align*}
+		\displaystyle \int_{-\infty}^{\infty}{\abs{u(x)}^\alpha \: dx_1} &\leq \int_{-\infty}^{\infty}{\prod\limits_{i = 1}^{n}{\left( \int_{-\infty}^{\infty}{\abs{Du(x_1,\dots,y_i,\dots,x_n)} \: dy_i} \right)^{\beta}} \: dx_1} \\
+		&= \left( \int_{-\infty}^{\infty}{\abs{Du} \: dy_1} \right)^\beta \left(\int_{-\infty}^{\infty}{\prod\limits_{i=2}^{n}{\left[\int_{-\infty}^{\infty}{\abs{Du} \: dy_i}\right]^\beta} \: dx_1}\right) \\
+		&\leq \left( \int_{-\infty}^{\infty}{\abs{Du} \: dy_1} \right)^\beta \left( \prod\limits_{i=2}^{n}{\left[ \int_{-\infty}^{\infty}{\int_{-\infty}^{\infty}{\abs{Du} \: dx_1}} \: dy_i \right]^\beta} \right) \\
+		&= I_1 \left( \prod\limits_{i=2}^{n}{\left[ \int_{-\infty}^{\infty}{\int_{-\infty}^{\infty}{\abs{Du} \: dx_1}} \: dy_i \right]^\beta} \right)
+	\end{align*}
+	where the last inequality is obtained after applying the general H\"older's inequality. Continuing on, we integrate both sides with respect to $x_2$, to obtain
+	\begin{align*}
+		\displaystyle \int_{-\infty}^{\infty}{\int_{-\infty}^{\infty}{\abs{u(x)}^\alpha \: dx_1} \: dx_2} &\leq \int_{-\infty}^{\infty}{ I_1 \prod\limits_{i=2}^{n}{\left[ \int_{-\infty}^{\infty}{\int_{-\infty}^{\infty}{\abs{Du} \: dx_1}} \: dy_i \right]^\beta} \: dx_2} \\
+		&= \left(\int_{-\infty}^{\infty}{\int_{-\infty}^{\infty}{\abs{Du} \: dx_1} \: dy_2}\right)^\beta \int_{-\infty}^{\infty}{ I_1 \prod\limits_{i=3}^{n}{\left[ \int_{-\infty}^{\infty}{\int_{-\infty}^{\infty}{ \abs{Du} \: dx_1} \: dy_i} \right]^\beta} \: dx_2} \\
+		&\leq \left(\int_{-\infty}^{\infty}{\int_{-\infty}^{\infty}{\abs{Du} \: dx_1} \: dy_2}\right)^\beta \left(I_2\prod\limits_{i=3}^{n}{\left[ \int_{-\infty}^{\infty}{ \int_{-\infty}^{\infty}{ \int_{-\infty}^{\infty}{\abs{Du} \: dx_1} \: dy_i} \: dx_2} \right]^\beta}\right)
+	\end{align*}
+	where $I_2$ is given by 
+	\begin{equation*}
+		\displaystyle I_2 := \left(\int_{-\infty}^{\infty}{\int_{-\infty}^{\infty}{ \abs{Du} \: dy_1} \: dx_2}\right)^\beta
+	\end{equation*}
+	The last step is again, due to an application of the generalized H\"older's inequality. Continuing in this fashion, we integrate with respect to $x_3, \dots, x_n$. Doing so, we observe that 
+	\begin{align*}
+		\displaystyle \int_{\mathbb{R}^n}{\abs{u(x)} \: dx} &\leq \prod\limits_{i = 1}^{n}{\left[ \int_{-\infty}^{\infty}\cdots\int_{-\infty}^{\infty}{\abs{Du} \: dx_1 \dots dy_i \dots dx_n} \right]^\beta} \\
+		&= \left( \int_{\mathbb{R}^n}{\abs{Du} dx} \right)^\alpha
+	\end{align*}
+	which is the desired result for the case when $p = 1$. To prove the case where $1 < p < n$, pick some $\gamma > 1$ and apply the same procedure as before, but this time to the function $\abs{u}^\gamma$. We apply the estimate to the absolute value of $u$ because in the end, we wish to keep the $\abs{Du}$ term. Utilizing the estimate for $p = 1$, we have 
+	\begin{align*}
+		\displaystyle \left( \int_{\mathbb{R}^n}{\abs{u}^{\gamma\alpha} \: dx} \right)^{\tfrac{1}{\alpha}} &\leq \int_{\mathbb{R}^n}{\abs{D\abs{u}^\gamma} \: dx} \\
+		&= \gamma \int_{\mathbb{R}^n}{\abs{u}^{\gamma - 1}\abs{Du} \: dx} \\
+		&\leq \gamma \left( \int_{\mathbb{R}^n}{\abs{u}^{(\gamma - 1)\tfrac{p}{p-1}} \: dx} \right)^{\tfrac{p-1}{p}}\left( 
+		\int_{\mathbb{R}^n}{\abs{Du}^p} \right)^{\tfrac{1}{p}}
+	\end{align*}
+	where the last inequality is due to an application of H\"older's inequality. The estimate can be further improved. The choice of $\gamma$ is up to us, so let us pick $\gamma$ such that 
+	\begin{equation}
+		\displaystyle \gamma \alpha = (\gamma - 1)\frac{p}{p-1} 
+	\end{equation}
+	so that our choice of $\gamma$ is 
+	\begin{equation*}
+		\displaystyle \gamma = \frac{p(n-1)}{n-p} > 1.
+	\end{equation*}
+	With this choice of $\gamma$, the estimate becomes 
+	\begin{equation*}
+		\displaystyle \left(\int_{\mathbb{R}^n}{\abs{u}^{\gamma\alpha} \: dx}\right)^{\left[\tfrac{1}{\alpha} - \tfrac{p-1}{p}\right]} \leq \gamma \left( \int_{\mathbb{R}^n}{\abs{Du} \: dx} \right)^{\tfrac{1}{p}}.
+	\end{equation*}
+	Everything in the brackets can be reduced to 
+	\begin{equation*}
+		\displaystyle \frac{1}{\alpha} - \frac{p-1}{p} = \frac{np}{n-p} =: p^*.
+	\end{equation*}
+	Additionally, with this choice of $\gamma$, note that 
+	\begin{equation*}
+		\displaystyle \gamma \alpha = \left(\frac{p(n-1)}{n-p}\right) \left(\frac{n}{n-1}\right) = \frac{np}{n-p} =: p^*
+	\end{equation*}
+	Thus, the estimate becomes 
+	\begin{equation*}
+		\displaystyle \left(\int_{\mathbb{R}^n}{\abs{u}^{p^*} \: dx}\right)^\frac{1}{p^*} \leq \gamma \left( \int_{\mathbb{R}^n}{\abs{Du}^p} \right)^{\tfrac{1}{p}}
+	\end{equation*}
+	which is indeed, the desired result. 
+\end{proof}
+Using the GNS theorem, we will now show that the space $W^{1,p}(\Omega) \subset L^{p^*}(\Omega)$. That is, the space $W^{1,p}(\Omega)$ is embedded in the space $L^{p^*}(\Omega)$. 
+\begin{theorem}
+	Let $\Omega$ be a bounded domain, the boundary be $C^1$, $1 \leq p < n$, and $u \in W^{1,p}(\Omega)$. Then $u \in L^{p^*}$ and 
+	\begin{equation*}
+		\displaystyle \norm{u}_{L^{p^*}(\Omega)} \leq C \norm{u}_{W^{1,p}(\Omega)}.
+	\end{equation*}
+\end{theorem}
+\begin{proof}
+	Since the boundary is $C^1$, by the extension theorem discussed in section 3.3, there exists an extension $Eu = \bar{u} \in W^{1,p}(\mathbb{R}^n)$ such that $\bar{u} = u$ in $\Omega, \bar{u}$ has compact support, and we have the estimate 
+	\begin{equation*}
+		\displaystyle \norm{\bar{u}}_{W^{1,p}(\mathbb{R}^n)} \leq C\norm{u}_{W^{1,p}(\Omega)}.
+	\end{equation*}
+	Since $\bar{u}$ has compact support, there exist functions $u_m \in C_c^\infty(\in \mathbb{R}^n)$ $(m = 1,\dots)$ such that 
+	\begin{equation*}
+		\displaystyle u_m \to \bar{u} \textrm{ in } W^{1,p}(\mathbb{R}^n).
+	\end{equation*}
+	Now, by the GNS theorem, we have the estimate 
+	\begin{equation*}
+		\displaystyle \norm{u_m - u_l}_{L^{p^*}(\mathbb{R}^n)} \leq C \norm{D(u_m - u_l)}_{L^p(\mathbb{R}^n)} = C \norm{Du_m - Du_l}_{L^p(\mathbb{R}^n)}
+	\end{equation*}
+	for each $l,m \geq 1$. The right hand-side tends to $0$, and thus the above inequality implies that 
+	\begin{equation}
+		\label{theorem 3.9, convergence in Sobolev}
+		\displaystyle u_m \to \bar{u} \textrm{ in } L^{p^*}(\mathbb{R}^n).
+	\end{equation}
+	Additionally, we have
+	\begin{equation}
+		\label{theorem 3.9, convergence in L^p}
+		\displaystyle Du_m \to D\bar{u} \textrm{ in } L^p(\mathbb{R}^n). 
+	\end{equation}
+	To verify this claim, notice that by definition, if $u_m \to \bar{u}$ in $W^{1,p}(\Omega)$, then 
+	\begin{equation*}
+		\displaystyle \norm{u_m - \bar{u}}_{W^{1,p}(\mathbb{R}^n)} = \left( \norm{u_m - u}_{L^p(\R^n)} + \norm{Du_m - D\bar{u}}_{L^p(\R^n)} \right)^{1/p} 
+	\end{equation*}
+	tends to zero. Since 
+	\begin{equation*}
+		\displaystyle \norm{Du_m - D\bar{u}}_{L^p(\R^n)} \leq \norm{u_m - \bar{u}}_{W^{1,p}(\R^n)}
+	\end{equation*}
+	we have verified that $Du_m \to D\bar{u}$ in $L^p(\R^n)$. 
+	Applying the GNS inequality once again, we find that 
+	\begin{equation*}
+		\displaystyle \norm{u_m}_{L^{p^*}(\mathbb{R}^n)} \leq C\norm{Du_m}_{L^p(\mathbb{R}^n)}.
+	\end{equation*}
+	Combining (\ref{theorem 3.9, convergence in Sobolev}) and (\ref{theorem 3.9, convergence in L^p}), we observe that 
+	\begin{equation*}
+		\displaystyle \norm{\bar{u}}_{L^{p^*}(\R^n)} \leq C \norm{D\bar{u}}_{L^p(\R^n)}.
+	\end{equation*}
+	By definition of $\bar{u}$, we arrive at the desired result. This completes the proof.
+\end{proof}
+With the above inequality, we have now shown the embedding of $W^{1,p}$ into $L^{p^*}$, which we will denote $W^{1,p} \hookrightarrow L^p$. So if we have a function $u \in W^{1,p}(\Omega)$, then we automatically have that $u \in L^{p^{*}}(\Omega)$. One particular property of $L^p$ spaces is that its dual space is easily characterized, while the dual of $W^{1,p}(\Omega)$ is not. Thus, by proving this embedding exists, we can work with $L^p$ spaces instead. 
+
+Before we move on and discuss another Sobolev-type inequality, the Poincar\`e's inequality, we introduce a lemma. 
+\begin{lemma}
+	($L^p$ Inclusion Lemma). Let $\Omega$ be bounded, $1 \leq q \leq p^*$, and $u \in L^{p^*}(\Omega)$. Then 
+	\begin{equation*}
+		\displaystyle \norm{u}_{L^q(\Omega)} \leq \norm{u}_{L^{p^*}(\Omega)}.
+	\end{equation*} 
+\end{lemma}
+\begin{proof}
+	Observe that 
+	\begin{align*}
+		\displaystyle \norm{u}_{L^{p^*(\Omega)}} &\leq \norm{u}_{L^{p^*}(\Omega)}^{p^*} \\
+		&= \int_{\Omega}{\abs{u}^{p^*} \: dx} \\
+		&= \int_{\Omega}{\abs{u}^{p^*-1}\abs{u} \: dx} \\
+		&= \left(\int_{\Omega}{\abs{u}^{(p^*-1)\alpha} \: dx}\right)^{1/\alpha} \left(\int_{\Omega}{\abs{u}^{q} \: dx}\right)^{1/q}
+	\end{align*}
+	where $\alpha$ is chosen so that $\frac{1}{\alpha} + \frac{1}{q} = 1$, so that we may apply H\"older's inequality. Thus, we conclude that 
+	\begin{equation*}
+		\displaystyle \norm{u}_{L^q(\Omega)} \leq \norm{u}_{L^{p^*}(\Omega)}
+	\end{equation*}
+	which is the desired result. 
+\end{proof}
+We now move to discuss two Poincar\`e's inequalities, which will provide us with an estimate for $u \in W^{1,p}_0(\Omega)$. 
+\begin{theorem}
+	Let $\Omega$ be a bounded domain, the boundary be $C^1, 1 \leq p < n$. Then for all $1 \leq q \leq p^*$, there exists a constant $C$ independent of $u \in W^{1,p}_0(\Omega)$ such that we have the estimate
+	\begin{equation*}
+		\displaystyle \norm{u}_{L^q(\Omega)} \leq C \norm{Du}_{L^p(\Omega)}. 
+	\end{equation*}
+\end{theorem}
+\begin{proof}
+	Since $u \in W^{1,p}_0(\Omega)$, by definition there exists functions $u_m \in C^\infty_c(\Omega)$ $(m = 1,\dots)$ such that 
+	\begin{equation*}
+		\displaystyle u_m \to u \textrm{ in } W^{1,p}_0(\Omega).
+	\end{equation*}
+	For each of these $u_m$, let us define the extended function $\bar{u}_m := Eu_m$ such that 
+	\begin{equation*}
+		\displaystyle \bar{u}_m := \begin{cases}
+			u_m, & \textrm{ if } x \in \Omega \\
+			0, & \textrm{ if } x \in \mathbb{R}^n \setminus \bar{\Omega}.
+		\end{cases}
+	\end{equation*} 
+	Notice that this extension is possible because $u_m$ is a smooth and compactly supported function. As a result, this extension does not introduce any particular discontinuities. Applying the GNS theorem, we can see that 
+	\begin{equation*}
+		\displaystyle \norm{u_m - u_l}_{L^{p^*}(\mathbb{R}^n)} \leq C \norm{Du_m - Du_l}_{L^p(\R^n)}
+	\end{equation*}
+	so that, since $u \in W^{1,p}_0(\Omega)$, 
+	\begin{equation}
+		\label{theorem 3.10, convergence in Sobolev}
+		\displaystyle u_m \to u \textrm{ in } L^{p^*}(\R^n). 
+	\end{equation}
+	By the same argument presented in a previous proof, we can see that 
+	\begin{equation}
+		\label{theorem 3.10, convergence in L^p}		
+		\displaystyle Du_m \to Du \textrm{ in } L^p(\mathbb{R}^n).
+	\end{equation}
+	By the GNS inequality, we have that 
+	\begin{equation*}
+		\displaystyle \norm{\bar{u}_m}_{L^{p^*}(\mathbb{R}^n)} \leq C \norm{D\bar{u}_m}_{L^p(\R^n)}. 
+	\end{equation*}
+	Using the definition of the extension of $u_m$, the estimate reduces to 
+	\begin{equation*}
+		\displaystyle \norm{u_m}_{L^{p^*}(\Omega)} \leq C \norm{Du_m}_{L^p(\Omega)}.
+	\end{equation*}
+	Combining (\ref{theorem 3.10, convergence in Sobolev}) and (\ref{theorem 3.10, convergence in L^p}), we find that 
+	\begin{equation}
+		\label{theorem 3.10, estimate before lemma}
+		\displaystyle \norm{u}_{L^{p^*}(\Omega)} \leq C \norm{Du}_{L^p(\Omega)}.
+	\end{equation}
+	Combining (\ref{theorem 3.10, estimate before lemma}) with lemma 3.1, we obtain that 
+	\begin{equation*}
+		\displaystyle \norm{u}_{L^q(\Omega)} \leq C \norm{Du}_{L^p(\Omega)}
+	\end{equation*}
+	for $q \in [1,p^*]$, which is the desired result. 
+\end{proof}
+In view of the above result, we can see that the norm $\norm{Du}_{L^p(\Omega)}$ is equivalent to $\norm{u}_{W^{1,p}(\Omega)}$.
+\begin{lemma}
+	If $u \in W_0^{1,p}(\Omega)$ and $\Omega$ is bounded, then the norm $\norm{Du}_{L^p(\Omega)}$ is equivalent to $\norm{u}_{W^{1,p}(\Omega)}$.
+\end{lemma}
+\begin{proof}
+	From theorem 3.9 and choosing $q = p^*$, we have
+	\begin{equation*}
+		\displaystyle \norm{u}_{L^{p^*}(\Omega)} \leq C_0\norm{u}_{W^{1,p}(\Omega)}.
+	\end{equation*}
+	From theorem 3.10, we have 
+	\begin{equation*}
+		\displaystyle \norm{u}_{L^{p^*}(\Omega)} \leq C_1\norm{Du}_{L^p(\Omega)}. 
+	\end{equation*}
+	In both the above, the constants $C_0, \: C_1$ are arbitrary, positive, constants. Combining these two results, we can clearly see that the two norms are equivalent, given the assumptions. 
+\end{proof}
+
+\subsection{Compactness.}
+\section{Second-Order Elliptic Equations.}
+We move to discuss second-order elliptic PDEs subject to boundary conditions. Second-order elliptic PDEs arise in many physical applications in engineering, biology, and physics. For example, Laplace's equation appears in many applications in electrostatics and Poisson's equation arises in many applications in electrodynamics. 
+
+Though Laplace and Poission's equations are classic examples of second-order elliptic PDEs, in this section, we will use the tools developed in our discussion on Sobolev spaces to study the more general problem 
+\begin{equation}
+	\label{boundary value problem, elliptic pde}
+	\displaystyle \begin{cases}
+		Lu = f, & \textrm{ in } \Omega \\
+		u = 0, & \textrm{ on } \partial \Omega
+	\end{cases}
+\end{equation}
+where $u = u(x), u: \bar{\Omega} \to \mathbb{R}$ is the unknown function of interest. The function $f: \Omega \to \mathbb{R}$ is given, and $L$ is a second-order partial differential operator. The partial differential operator can take one of two forms: 
+\begin{equation}
+	\label{elliptic operator, divergence form}
+	\displaystyle Lu = -\sum\limits_{i,j=1}^{n}{\left( a^{ij}(x)u_{x_i} \right)_{x_j}} + \sum\limits_{i = 1}^{n}{b^i(x)u_{x_i}} + c(x) u
+\end{equation}
+or 
+\begin{equation}
+	\label{elliptic operator, non-divergence form}
+	\displaystyle Lu = -\sum\limits_{i,j=1}^{n}{a^{ij}(x)u_{x_ix_j}} + \sum\limits_{i = 1}^{n}{b^i(x)u_{x_i}} + c(x) u
+\end{equation}
+where the coefficient functions are known and $a^{ij} = a^{ji}$, which is called the symmetry condition. 
+
+Eq. (\ref{elliptic operator, divergence form}) is known as the \textit{divergence form} of the operator $L$. Eq. (\ref{elliptic operator, non-divergence form}) is known as the \textit{non-divergence form} of the operator $L$. Both forms have their advantages and disadvantages. The divergence form of $L$ is useful for modern energy-based methods and the non-divergence form is useful for maximum principle-based methods, for discussing properties of solutions to PDEs. 
+
+\begin{definition}
+	We say that the partial differential operator $L$ is uniformly elliptic if there exists $\theta > 0, \theta \in \mathbb{R}$ such that 
+	\begin{equation*}
+		\displaystyle \sum\limits_{i,j=1}^{n}{a^{ij}(x)\xi_i\xi_j} \geq \theta \abs{\xi}^2
+	\end{equation*} 
+	for almost everywhere $x \in \Omega$ and all $\xi \in \mathbb{R}^n$. 
+\end{definition}
+For each $x \in \Omega$, let $A(x)$ be the matrix where the $ij$-th element is $a^{ij}(x)$. Then the above condition for $L$ to be a uniformly elliptic partial differential operator is equivalent to requiring that for each $x \in \Omega$, the matrix $A$ is symmetric positive definite, and for any $x \in \Omega$, the smallest eigenvalue is greater than or equal to $\theta$. 
+
+For example, if we take $a^{ij} = \delta_{ij}$, where $\delta_{ij}$ is the Kronecker delta, and $b^i = 0$ and $c \equiv 0$ for all $x \in \Omega$, then the partial differential operator $L$ is the standard Laplacian, $-\Delta$. The problem then reduces to finding $u$ such that
+\begin{equation*}
+	\displaystyle \begin{cases}
+		-\Delta u = f, & \textrm{ in } \Omega \\
+		u = 0, & \textrm{ on } \partial \Omega
+	\end{cases}
+\end{equation*}
+which is the Poisson equation subject to homogeneous Dirichlet boundary conditions. Though we have established representation formulas for this problem on specific domains, we must be careful to assume that these representation formulas hold even if our domain $\Omega$ is that specific domain. We must instead work directly with the PDE and unveil its properties. 
+\subsection{Motivation for Weak Solutions.}
+Our goal is now to define and construct weak solutions $u$ to the boundary value PDE problem. Later, we will examine the smoothness, amongst other topological properties, of $u$. 
+
+Let us assume that the coefficient functions $a^{ij}, b^i, c \in L^\infty(\Omega)$ for $i,j = 1,\dots,n$. Furthermore, let us assume that $f \in L^2(\Omega)$. To define the weak solution, let us assume that $L$ has the divergence form. Let $\phi \in C^{\infty}_c(\Omega)$ be a test function. Integrating the PDE $Lu = f$ over $\Omega$, we obtain 
+\begin{equation*}
+	\displaystyle -\int_{\Omega}{\sum\limits_{i,j=1}^{n}{\left( a^{ij}u_{x_i}\right)_{x_j}}\phi \: dx} + \int_{\Omega}{\sum\limits_{i}^{n}{b^{i}u_{x_i}}\phi \: dx} + \int_{\Omega}{cu\phi \: dx} = \int_{\Omega}{f\phi \: dx}. 
+\end{equation*}
+The first term can be reduced using integration by parts, to obtain
+\begin{equation*}
+	\displaystyle \int_{\Omega}{\sum\limits_{i,j=1}^{n}{a^{ij}u_{x_i}}\phi_{x_j} \: dx} + \int_{\Omega}{\sum\limits_{i}^{n}{b^{i}u_{x_i}}\phi \: dx} + \int_{\Omega}{cu\phi \: dx} = \int_{\Omega}{f\phi \: dx}.
+\end{equation*}
+Note that since $\phi$ is a test function, it vanishes on the boundary. Using the approximation tools discussed in section 3.1, we find that the above holds for functions $\phi \in H_0^1(\Omega)$. In particular, the only assumption we need to place on $\phi$ was that it has a $1^{st}$-weak derivative. If we replace the very smooth function $\phi$ with a $\phi \in H_0^1(\Omega)$, then we also require that $u \in H_0^1(\Omega)$. The space $H_0^1(\Omega)$, which is the closure of $C^{\infty}(\Omega)$ in $H^1(\Omega)$, was chosen because it incorporates the required boundary condition, $\phi = 0$ on $\partial \Omega$. Without this boundary condition, the step where we used integration by parts would not be valid. So we find that we never required $\phi$ to be a very smooth function.
+
+As the left-hand side of the previous inequality is used quite often, it is given a special name. 
+\begin{definition}
+	Let $u,v \in H_0^1(\Omega)$. The bilinear form $B[\:,\:]$ associated with the elliptic operator $L$ is defined as 
+	\begin{equation*}
+		\displaystyle B[u,\phi] = \int_{\Omega}{\sum\limits_{i,j=1}^{n}{a^{ij}u_{x_i}}\phi_{x_j} + \sum\limits_{i}^{n}{b^{i}u_{x_i}}\phi + cu\phi \: dx}.
+	\end{equation*}
+\end{definition}
+Using this notation, we can define the weak solution to the boundary value problem.
+\begin{definition}
+	We say that $u \in H_0^1(\Omega)$ is a weak solution of the boundary value problem (\ref{boundary value problem, elliptic pde}) if 
+	\begin{equation*}
+		\displaystyle B[u,\phi] = (f,\phi) = \int_{\Omega}{f\phi \: dx}
+	\end{equation*}
+	for all $\phi \in H_0^1(\Omega)$, where $(\:,\:)$ denotes the inner product in $L^2(\Omega)$. Using the language of the calculus of variations, this is a variational formulation of the boundary-value problem.
+\end{definition}
+More generally, if we consider the boundary-value problem 
+\begin{equation*}
+	\displaystyle \begin{cases}
+		Lu = f^0 - \sum\limits_{i = 1}^{n}{f^i_{x_i}}, & \textrm{ in } \Omega \\
+		u = 0, & \textrm{ on } \partial \Omega. 
+	\end{cases}
+\end{equation*}
+
+Hereinafter, we will only consider the boundary value problem where the boundary condition is the homogeneous Dirichlet boundary condition. It is often the case, especially in physical applications, that they boundary condition is non-homogeneous. Without loss of generality, we may assume that the boundary conditions is identically equal to $0$. Consider the following argument. Let us consider the problem 
+\begin{equation}
+	\label{second-order elliptic equations, non-homogeneous boundary conditions}
+	\displaystyle \begin{cases}
+		Lu = f, & \textrm{ in } \Omega \\
+		u = g, & \textrm{ on } \partial \Omega
+	\end{cases}
+\end{equation}
+where $\partial \Omega$ is $C^1$ and $u \in H^1(\Omega)$ is a weak solution to the PDE. Using the language developed in our discussion of traces, the above requires that $u = g$ on $\partial \Omega$ in the trace sense. If this is true, then it must also be true that $g$ is the trace of some function $w \in H^{1}(\Omega)$. From this, we deduce that $\bar{u} = u - w$ is an element of $H_0^1(\Omega)$ since $u = 0$ in the trace sense. Therefore, if we solve the boundary-value problem
+\begin{equation*}
+	\displaystyle \begin{cases}
+		L\bar{u} = \bar{f}, & \textrm{ in } \Omega \\
+		\bar{u} = 0, & \textrm{ on } \partial \Omega 
+	\end{cases}
+\end{equation*}
+where $\bar{f} = f - Lw \in H^{-1}(\Omega)$, we can recover the solution to (\ref{second-order elliptic equations, non-homogeneous boundary conditions}) very easily. 
+
+\subsection{Existence of Weak Solutions.}
+Motivated by our search for weak solutions, we step back and ask ourselves: what conditions, if any, must be satisfied for a weak solution to exist? To this end, we introduce a fundamental result from functional analysis that will be useful for studying the existence of weak solutions. 
+\begin{remark}
+	For the remainder of this section, let $H$ be a Hilbert space endowed with the norm $\norm{\cdot}$ and inner product $(\:,\:)$. 
+\end{remark}
+\begin{theorem}
+	\label{existence of weak solutions, lax-milgram theorem}
+	Let $B: H \times H \to \R$ be a bilinear mapping, such that for positive constants $\alpha, \beta$, we have 
+	\begin{equation*}
+		\displaystyle \abs{B[u,v]} \leq \alpha \norm{u} \norm{v}
+	\end{equation*}
+	for $u, v \in H$ and 
+	\begin{equation*}
+		\displaystyle \beta \norm{u} \leq B[u,v] 
+	\end{equation*}
+	for $u \in H$. If $f: H \to \R$ is a bounded linear functional on $H$, then there exists a unique element $u \in H$ such that 
+	\begin{equation*}
+		\displaystyle B[u,v] = \inp{f}{v} 
+	\end{equation*}
+	for all $v \in H$. 
+\end{theorem}
+\begin{proof}
+	From the assumption, we know that the mapping $x \mapsto B[u,v]$ is a bounded linear mapping in $H$. Thus, by the Riesz representation theorem, there exists a unique $w \in H$ such that
+	\begin{equation*}
+		\displaystyle B[u,v] = (w,v).
+	\end{equation*}
+	Whence the above holds we will write $Au = w$, for $A : H \to H$. Then the above becomes 
+	\begin{equation}
+		\label{lax-milgram theorem, extention of the Riesz representation theorem}
+		\displaystyle B[u,v] = (Au,v).
+	\end{equation}
+	We propose that the operator $A$ is a bounded linear operator. To see this, we first note that for $\lambda_1, \lambda_2 \in \R, u_1, u_2, v \in H$ we have that
+	\begin{align*}
+		\displaystyle (A(\lambda_1 u_1 + \lambda_2 u_2), v) &= B[\lambda_1 u_1 + \lambda_2 u_2, v] \\
+		&= \lambda_1 B[u_1,v] + \lambda_2 B[u_2, v] \\
+		&= \lambda_1(Au_1,v) + \lambda_2(Au_2, v) \\
+		&= (\lambda_1 Au_1 + \lambda_2Au_2, v)
+	\end{align*}
+	thus concluding that the operator $A$ is indeed linear. The last step comes from the linearity, in the first arugment, of the inner product. Additionally, we note that 
+	\begin{equation*}
+		\displaystyle \norm{Au}^2 = (Au, Au) = B[u, Au] \leq \alpha \norm{u}\norm{Au} 
+	\end{equation*}
+	and thus we conclude that 
+	\begin{equation*}
+		\displaystyle \norm{Au} \leq \alpha \norm{u} 
+	\end{equation*}
+	thus concluding that the operator $A$ is indeed bounded. These two arguments confirm that $A$ is a bounded linear operator. 
+	
+	Our next goal is to show that $A$ is a one-to-one function and that the range of $A$ is closed. Notice that 
+	\begin{equation*}
+		\displaystyle \beta\norm{u}^2 \leq B[u, u] = (Au, u) \leq \norm{Au} \norm{u}
+	\end{equation*}
+	by the Cauchy-Schwarz lemma, and thus $\beta \norm{u} \leq \norm{Au} \leq \alpha \norm{u}$. This confirms that the operator $A$ is one-to-one and that the range of $A$ is closed. 
+\end{proof}
+\section{Second-Order Parabolic Equations.}
+% To be completed after the section on Sobolev space embeddings is completed. May require a discussion of the maximum principle for the Heat equation. Maybe the minimum principle as well. 
+In this section, we discuss a class of PDEs that involve time as a variable. These PDEs are often referred to as \textit{evolution equations}, because the solutions evolve over time. Our goal, as an analyst, is to study the behavior of the solution over time. In particular, we will study second-order parabolic PDEs subject to appropriately defined initial and boundary conditions. Much of the development of the theory surrounding these PDEs will mimic our treatment of second-order elliptic equations. In particular, we study the existence and uniqueness of weak solutions as well as other interesting properties. 
+
+For this section, let $U$ to be open, bounded subsets of $\mathbb{R}^n$ and as before, set $U_T = U \times (0,T]$ for some fixed $T > 0$. We will study the initial/boundary value problem 
+\begin{equation}	
+	\label{parabolic equations, general problem}
+	\displaystyle \begin{cases}
+		u_t + Lu = f, & \textrm{ in } U_T \\
+		u = 0, & \textrm{ on } \partial U \times [0,T] \\
+		u = g, & \textrm{ on } U \times \left\{t = 0\right\},  
+	\end{cases}
+\end{equation}
+where $f: U_T \to \mathbb{R}$ and $g: U \to \mathbb{R}$ are given, and $u = u(x,t), u : U_T \to \mathbb{R}$ is the unknown function of interest. The operator $L$ denotes, for each time $t$, the partial differential operator which has either the divergence form 
+\begin{equation}
+	\label{parabolic equations, divergence form}
+	\displaystyle Lu = -\sum\limits_{i,j=1}^{n}{(a^{ij}(x,t)u_{x_i})_{x_j}} + \sum\limits_{i = 1}^{n}{b^i(x,t)u_{x_i}} + c(x,t)u
+\end{equation}
+or the non-divergence form 
+\begin{equation}
+	\label{parabolic equations, non-divergence form}
+	\displaystyle Lu = -\sum\limits_{i,j=1}^{n}{a^{ij}(x,t)u_{x_ix_j}} + \sum\limits_{i = 1}^{n}{b^i(x,t)u_{x_i}} + c(x,t)u
+\end{equation}
+for given coefficients $a^{ij}, b^i, c$ for each $i,j=1,\dots,n$. As with second-order elliptic equations, both forms have their advantages and disadvantages. 
+
+As with second-order elliptic equations, we will consider the boundary value problem where the boundary problem is the homogeneous Dirichlet boundary condition. If the boundary condition is not homogeneous, we can force it to be homogeneous using the same methods used in our discussion of second-order elliptic equations. 
+% Insert here, the argument which allows you to talk about why assuming the boundary condition is zero is allowed. 
+\begin{definition}
+	We say that the partial differential operator $\tfrac{\partial}{\partial t} + L$ is uniformly parabolic if there exists a constant $\theta > 0$ such that 
+	\begin{equation*}
+		\displaystyle \sum\limits_{i,j=1}^{n}{a^{ij}(x,t)\xi_{i}\xi_j} \geq \theta \abs{\xi}^2
+	\end{equation*}
+	for all $(x,t) \in U_T$ and $\xi \in \mathbb{R}^n$. Note that for each fixed time $t$, the operator $L$ is uniformly parabolic in the spatial variable $x$. 
+\end{definition}
+As discussed before, let $x \in \Omega, 0 \leq t \leq T$ be some fixed time, and $A(x)$ be the matrix where the $ij$-th element is $a^{ij}(x,t)$. Then the above condition for $L$ to be uniformly parabolic in $x$ is the equivalent to requiring that for each $x \in \Omega$ the matrix $A$ is symmetric positive definite, and for any $x \in \Omega$ the smallest eigenvalue is greater than or equal to $\theta$. 
+
+If we take $a^{ij} = \delta_{ij}, b^i = c = 0$ and any arbitrary function $f$, then the operator $L$ is the standard Laplacian $-\Delta$ and the PDE becomes the standard non-homogeneous heat equation! We will later see that many solutions to (\ref{parabolic equations, general problem}) have many properties that the heat kernel is equipped with. For other examples of second-order parabolic PDE, look at the Fokker-Planck, Kolmogorov, and Liouville's equation. 
+
+Again, the representation formulas developed in a first course of study in partial differential equations will not particularly work
+\subsection{Weak Solutions.}
+
+
+\section{Appendix.}
+\subsection{Results from Functional Analysis.}
+This section is dedicated to a review of some of the fundamental results from functional analysis that are used substantially throughout the paper. 
+\begin{lemma}
+	(Young's Inequality). Let $1 < p, q < \infty$ and $\tfrac{1}{p} + \tfrac{1}{q} = 1$. Then 
+	\begin{equation*}
+		\displaystyle ab \leq \frac{a^p}{p} + \frac{b^q}{q}
+	\end{equation*}
+	for $a,b > 0$.
+\end{lemma} 
+\begin{proof}
+	We use the fact that the mapping $x \to e^x$ is a convex map. Therefore, 
+	\begin{equation*}
+		\displaystyle ab = e^{\log a + \log b} = e^{\tfrac{1}{p}\log a^p + \tfrac{1}{q}\log b^q} \leq \frac{1}{p}e^{\log a^p} + \frac{1}{q}e^{\log b^q} = \frac{a^p}{p} + \frac{b^q}{q}
+	\end{equation*}
+	which is the desired result.
+\end{proof}
+\begin{lemma}
+	(H\"{o}lder's Inequality). Let $1 \leq p,q \leq \infty, \tfrac{1}{p} + \tfrac{1}{q} = 1$. Then if $u \in L^p(\Omega), v \in L^q(\Omega)$, we have 
+	\begin{equation*}
+		\displaystyle \int_{\Omega}{\abs{uv} \: dx} \leq \norm{u}_{L^p(\Omega)} + \norm{v}_{L^q(\Omega)}
+	\end{equation*}
+	which is the desired result.
+\end{lemma}
+\begin{proof}
+	Using the absolute homogeneity property of norms let us set, without loss of generality, $\norm{u} = \norm{v} = 1$. Then, by the Young's inequality, we observe that 
+	\begin{equation*}
+		\displaystyle \int_{\Omega}{\abs{uv} \: dx} \leq \frac{1}{p}\int_{\Omega}{\abs{u}^p \: dx} + \frac{1}{q}\int_{\Omega}{\abs{v}^{p} \: dx} = 1 = \norm{u}_{L^p(\Omega)} \leq \norm{u}_{L^p(\Omega)}\norm{v}_{L^q(\Omega)}. 
+	\end{equation*}
+\end{proof}
+\begin{lemma}
+	(General H\"older's Inequality). Let $1 \leq p_1, \dots, p_n \leq \infty$ be integers such that $\sum_{i=1}^{n}{\tfrac{1}{p_i}} = 1$. Furthermore, assume that for each $k =1, \dots, n$, $u_k \in L^{p_k}(\Omega)$. Then 
+	\begin{equation*}
+		\displaystyle \int_{\Omega}{\abs{u_1\cdots u_n} \: dx} \leq \prod\limits_{k = 1}^{n}{\norm{u_k}_{L^{p_k}(\Omega)}}.
+	\end{equation*}
+\end{lemma}
+\begin{proof}
+	We proceed by induction. 
+\end{proof}
+\begin{lemma}
+	(Minkowski's Inequality). Let $1 \leq p \leq \infty$ and $u, v \in L^p(\Omega)$. Then 
+	\begin{equation*}
+		\displaystyle \norm{u + v}_{L^p(\Omega)} \leq \norm{u}_{L^p(\Omega)} + \norm{v}_{L^p(\Omega)}.
+	\end{equation*}
+\end{lemma}
+\begin{proof}
+	To prove this, we use a common trick used to prove these types of inequalities. 
+	\begin{align*}
+		\displaystyle \norm{u + v}_{L^p(\Omega)}^p &= \int_{\Omega}{\abs{u + v}^p \: dx} \\
+		&\leq \int_{\Omega}{\abs{u + v}^{p-1}(\abs{u} + \abs{v}) \: dx} 
+	\end{align*}
+	which comes from an application of the triangle inequality. Then, an application of H\"older's inequality gives,
+	\begin{align*}
+		\displaystyle \norm{u + v}_{L^p(\Omega)}^p &\leq \left(\int_{\Omega}{\abs{u + v}^p \: dx}\right)^{\tfrac{p-1}{p}}\left(\left(\int_{\Omega}{\abs{u}^p \: dx}\right)^{\tfrac{1}{p}}+ \left(\int_{\Omega}{\abs{v}^p \: dx}\right)^{\tfrac{1}{p}}\right) \\
+		&= \norm{u + v}_{L^p(\Omega)}^{p-1}(\norm{u}_{L^p(\Omega)} + \norm{v}_{L^p(\Omega)})
+	\end{align*}
+	from which the desired result follows. 
+\end{proof}
+\begin{definition}
+	Let $V$ be a vector space defined over the real or complex numbers. Let $\norm{\cdot}_{X}$ and $\norm{\cdot}_{Y}$ be two norms. We say that the two norms are equivalent if, for $x \in V$, there exist positive constants $C_0,C_1$ such that 
+	\begin{equation*}
+		\displaystyle C_0\norm{x}_{X} \leq \norm{x}_{Y} \leq C_1\norm{x}_Y.
+ 	\end{equation*}
+\end{definition}
+\subsection{The Space $H^{-1}$.}
+This section is dedicated to studying properties of the Dual space of $H_0^1(\Omega)$. Dual spaces are studied for their nice properties, and are a crucial part of functional analysis, however they are hard to find. For this particular space, the dual space can be constructed using a clever application of results from functional analysis. These spaces are important in studying operators on a vector space. 
+
+\begin{definition}
+	We let $H^{-1}(\Omega)$ denote the dual space of $H_0^1(\Omega)$. 
+\end{definition}
+By the definition of a dual space, $f$ belongs to the dual space if $f \in H_0^1(\Omega)$ is a bounded linear functional. 
+\begin{definition}
+	Let $x \in X, x^* \in X^*$. Then $x^*(x) = \inp{x}{x^*}$ denotes the pairing between $x$ and $x^*$. 
+\end{definition}
+As we have already shown in our treatment of Sobolev spaces, the space $W^{k,2}(\Omega)$ is a Banach space. Banach spaces are always endowed with a norm, which for $H^{-1}(\Omega)$ is defined in the following manner.
+\begin{definition}
+	Let $f \in H^{-1}(\Omega)$. Then the norm with respect to this space is defined by 
+	\begin{equation*}
+		\displaystyle \norm{f}_{H^{-1}(\Omega)} := \sup\left\{ \inp{f}{u} : u \in H_0^1(\Omega), \: \norm{u}_{H_0^1} \leq 1 \right\}.
+	\end{equation*}
+\end{definition}
+It was also previously mentioned (but not proved) that the space $H_0^1(\Omega)$ is a Hilbert space under the following inner product. 
+\begin{definition}
+	Let $u,v \in H_0^1(\Omega)$. Then the inner product $(u,v)$ is given by 
+	\begin{equation*}
+		\displaystyle (u,v) := \int_{\Omega}{Du \cdot Dv + uv \: dx}. 
+	\end{equation*}
+\end{definition}
+This definition of the inner product will be crucial to show some fundamental results about inhabitants of $H^{-1}(\Omega)$. 
+\begin{theorem}
+	Let $f \in H^{-1}(\Omega)$. Then there exist functions $f^0, f^1, \dots, f^n \in L^2(\Omega)$ such that the pairing is given by 
+	\begin{equation}
+		\label{dual space of hilbert, pairing theorem}
+		\displaystyle \inp{f}{u} = \int_{\Omega}{f^0 u + \sum\limits_{i = 1}^{n}{f^i u_{x_i}} \: dx}
+	\end{equation}
+	for some $u \in H_0^1(\Omega)$. 
+\end{theorem}
+\begin{proof}
+	Applying the Riesz representation theorem, we deduce that there is a unique function $u \in H_0^1(\Omega)$ such that for all $v \in H_0^1(\Omega)$, 
+	\begin{equation*}
+		\displaystyle \inp{f}{v} = \int_{\Omega}{Du \cdot Dv + uv \: dx}.
+	\end{equation*} 
+	This establishes that 
+	\begin{equation*}
+		\displaystyle \begin{cases}
+			f^0 = u, \\
+			f^i = u_{x_i} \: (i = 1,\dots,n)
+		\end{cases}
+	\end{equation*}
+	from which the desired result follows. 
+\end{proof}
+Using the above result, we can provide a much better estimate of the norm of $f \in H^{-1}(\Omega)$ with respect to $H^{-1}(\Omega)$. This is summarized in the following theorem. 
+\begin{theorem}
+	Let $f \in H^{-1}(\Omega)$. Then we have the estimate
+	\begin{equation*}
+		\displaystyle \norm{f}_{H^{-1}(\Omega)} = \inf\left\{ \left(\int_{\Omega}{\sum\limits_{i=0}^{n}{\abs{f^i}^2} \: dx}\right)^{1/2} : f \textrm{ satisfies } (\ref{dual space of hilbert, pairing theorem}) \textrm{ for } f^0, \dots, f^n \in L^2(\Omega) \right\}
+	\end{equation*}
+\end{theorem}
+\subsection{Mollification Theory.}
+Recall that if $\Omega \subset \mathbb{R}$ is an open set, then $\Omega_\epsilon = \left\{ x \in \Omega : \dist(x,\partial\Omega) > \epsilon \right\}$. 
+\begin{definition}
+	Define $\eta \in C^{\infty}(\Omega)$ in the following manner:
+	\begin{equation*}
+		\displaystyle \eta(x) := \begin{cases}
+		C\exp\left(\frac{1}{\abs{x}^2 - 2}\right), & \abs{x} < 1 \\
+		0, & \abs{x} \geq 1.
+		\end{cases}
+	\end{equation*}
+	where the constant $C$ is chosen so that 
+	\begin{equation*}
+		\displaystyle \int_{\mathbb{R}^n}{\eta(x) \: dx} = 1.
+	\end{equation*}
+	This is called the standard mollifier.
+\end{definition}
+Using this definition of $\eta$, we can define variants of the standard mollifier.
+\begin{definition}
+	Let $\epsilon > 0$. We call 
+	\begin{equation*}
+		\displaystyle \eta_\epsilon(x) := \frac{1}{\epsilon^n}\eta\left( \frac{x}{\epsilon} \right)
+	\end{equation*}
+	and $\epsilon$ variant of the standard mollifier. Furthermore, the support of the function $\eta_\epsilon$ is contained in $B(0,\epsilon)$.  
+\end{definition}
+We can also take the derivative with respect to $x_i$ for $i = 1, \dots, n$. It is given by 
+\begin{equation*}
+ 	\displaystyle \frac{\partial \eta_\epsilon}{\partial x_i}(x) = \frac{1}{\epsilon^{n+1}}\frac{\partial \eta}{\partial x_i}\left(\frac{x}{\epsilon}\right).
+\end{equation*}
+\begin{definition}
+	Let $f: \Omega \to \mathbb{R}, f \in L_{\loc}(\Omega)$. Define 
+	\begin{equation*}
+		\displaystyle f^\epsilon = f * \eta_\epsilon \textrm{ in } \Omega_\epsilon 
+	\end{equation*}
+	as the mollification of $f$ by $\eta_\epsilon$. Note that $f * \eta_\epsilon$ is given by 
+	\begin{equation*}
+		\displaystyle f*\eta_\epsilon = \int_{\Omega}{\eta_{\epsilon}(x-y)f(y) \: dy} = \int_{B(0,\epsilon)}{\eta_{\epsilon}(y)f(x-y) \: dy}
+	\end{equation*}
+	for all $x \in \Omega_\epsilon$. 
+\end{definition}
+Intuitively, if we are given a function that is irregular, we can construct an approximation to the original function, with the sharp points smoothed out, by convoluting it with a mollifier. This intuition provides the motivation for our discussion on constructing dense subsets of $W^{k,p}(\Omega)$. The tool of mollifiers will allow for us to approximate functions in $W^{k,p}(\Omega)$ by functions in $C^{\infty}(\Omega)$. 
+
+We now explore properties of mollifiers.  
+\begin{theorem}
+	Let $f: \Omega \to \mathbb{R}, f \in L_{\loc}(\Omega)$. Then, 
+	\begin{enumerate}
+		\item $f^{\epsilon} \in C^{\infty}(\Omega_\epsilon)$.
+		\item $f^\epsilon \to f$ almost everywhere as $\epsilon \to 0$. 
+		\item If $1 \leq p < \infty$ and $f \in L_{\loc}^p(\Omega)$, then $f^\epsilon \to f$ in $L_{\loc}^p(\Omega)$. 
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	(1). Fix $x \in \Omega_\epsilon, i = 1,\dots,n$ and pick $h$ small enough so that $x + he_i \in \Omega_\epsilon$. Here, $e_i$ denotes the unit vector where all elements are zero except for the $i$-th element. Our goal is to show that the derivative exists, for each $i$. By the definition of the derivative, we write
+	\begin{align*}
+		\displaystyle \frac{f^{\epsilon}(x + he_i) - f(x)}{h} &= \int_{\Omega}{\frac{1}{h}\left[ \eta_\epsilon(x + he_i -y) - \eta_\epsilon(x-y)\right]f(y) \: dy} \\
+		&= \frac{1}{\epsilon^n} \int_{\Omega}{\frac{1}{h}\left[ \eta\left(\frac{x + he_i -y}{\epsilon}\right) - \eta\left(\frac{x-y}{\epsilon}\right)\right]f(y) \: dy}.
+	\end{align*}
+	Since 
+	\begin{equation*}
+		\displaystyle \frac{1}{h}\left[ \eta\left(\frac{x + he_i -y}{\epsilon}\right) - \eta\left(\frac{x-y}{\epsilon}\right) \right] \to \frac{1}{\epsilon} \frac{\partial \eta}{\partial x_i}\left(\frac{x-y}{\epsilon} \right) \textrm{ as } h \to 0
+	\end{equation*}
+	uniformly on $\Omega$, we know that the derivative, $\tfrac{\partial f^\epsilon}{\partial x_i}$ exists. Furthermore, it is given by 
+	\begin{align*}
+		\displaystyle \frac{\partial f^\epsilon}{\partial x_i}(x) &= \lim\limits_{h \to 0}{\frac{1}{\epsilon^{n}}\int_{\Omega}{\frac{1}{h}\left[ \eta\left(\frac{x + he_i -y}{\epsilon}\right) - \eta\left(\frac{x-y}{\epsilon}\right)\right]f(y) \: dy}} \\
+		&= \frac{1}{\epsilon^n}\int_{\Omega}{\lim\limits_{h \to 0}{\frac{1}{h}\left[ \eta\left(\frac{x + he_i -y}{\epsilon}\right) - \eta\left(\frac{x-y}{\epsilon}\right)\right]}f(y) \: dy} \\
+		&= \frac{1}{\epsilon^{n + 1}} \int_{\Omega}{\frac{\partial \eta}{\partial x_i}\left( \frac{x-y}{\epsilon} \right) f(y) \: dy} \\
+		&= \int_{\Omega}{\frac{\partial \eta_\epsilon}{\partial x_i}(x-y) f(y) \: dy}.
+	\end{align*}
+	The limit can be taken inside the integral sign, since the convergence is uniform on $\Omega$. 
+	
+	By a similar argument, we can show that $D^\alpha f^\epsilon$ exists and is given by 
+	\begin{equation*}
+		\displaystyle D^\alpha f^\epsilon(x) = \int_{\Omega}{D^\alpha \eta_\epsilon (x-y) f(y) \: dy}
+	\end{equation*}
+	for all $x \in \Omega_\epsilon$ and multiindex $\alpha$. This proves (1). 
+	
+	(2). Fix a point $x \in \Omega$. Note that 
+	\begin{align*}
+		\displaystyle \abs{f^\epsilon(x) - f(x)} &= \abs{\int_{\Omega}{\eta_\epsilon(x-y)f(y) \: dy} - \int_{\Omega}{\eta_\epsilon(x-y)f(x) \: dy}} \\
+		&= \abs{ \int_{\Omega}{\eta_\epsilon(x-y)\left[ f(y) - f(x) \right] \: dy} } \\
+		&= \abs{\int_{B(x,\epsilon)}{\eta_\epsilon(x-y)\left[ f(y) - f(x) \right] \: dy}} \\
+		&\leq \int_{B(x,\epsilon)}{\abs{\eta_\epsilon(x-y)}\abs{f(y) - f(x)} \: dy} \\
+		&= \frac{1}{\epsilon^n}\int_{B(x,\epsilon)}{\abs{\eta\left(\frac{x-y}{\epsilon}\right)}\abs{f(y) - f(x)} \: dy} \\
+		&\leq C\dashint_{B(x,\epsilon)}{\abs{f(y) - f(x)} \: dy} \to 0
+	\end{align*}
+	as $\epsilon \to 0$, almost everywhere by the Lesbegue differentiation theorem. The constant $C$ comes from the fact that $\eta_\epsilon$ is a compactly support and continuous function. The barred integral denotes the average over the ball. By the squeeze theorem, we conclude that 
+	\begin{equation*}
+		\displaystyle \abs{f^\epsilon(x) - f(x)} \to 0 \textrm{ as } \epsilon \to 0
+	\end{equation*}
+	and thus $f^\epsilon \to f$, as $\epsilon \to 0$, which is the desired result. 
+	
+	(3). Choose an open set $\omega \subset \subset \Omega$ and another open set $\omega'$ such that $\omega \subset \subset \omega' \subset \subset \Omega$. Borrowing an idea from functional analysis, we assert that for sufficiently small $\epsilon > 0$, the following is true 
+	\begin{equation*}
+		\displaystyle \norm{f^\epsilon}_{L^p(\omega)} \leq \norm{f}_{L^p(\omega')}.
+	\end{equation*}  
+	To justify this assertion, consider the following argument. Fix some $x \in \omega$ and note that For $1 \leq p < \infty$, we have 
+	\begin{align*}
+		\displaystyle \abs{f^\epsilon(x)} &= \abs{\int_{B(x,\epsilon)}{\eta_{\epsilon}(x-y) f(y) \: dy}} \\ 
+		&\leq \int_{B(x,\epsilon)}{\eta_\epsilon(x-y)\abs{f(y)} \: dy} \\
+		&= \int_{B(x,\epsilon)}{\eta^{1 - \nicefrac{1}{p}}_\epsilon(x-y)\eta^{\nicefrac{1}{p}}_\epsilon(x-y)\abs{f(y)} \: dy}.
+	\end{align*}
+	Applying H\"older's inequality, we further obtain 
+	\begin{equation*}
+		\displaystyle \abs{f^\epsilon(x)} \leq \left( \int_{B(x,\epsilon)}{\eta_\epsilon(x-y) \: dy} \right)\left( \int_{B(x,\epsilon)}{\eta_\epsilon(x-y)\abs{f(y)}^p \: dy} \right)^{\nicefrac{1}{p}}.
+	\end{equation*}
+	The integral of the mollifier over $B(x,\epsilon)$, with $x$ fixed is identically $1$ by definition. After raising both sides of the above inequality by $p$, we obtain the inequality 
+	\begin{equation*}
+		\displaystyle \abs{f^\epsilon(x)}^p \leq \int_{B(x,\epsilon)}{\eta_\epsilon(x-y)\abs{f(y)}^p \: dy}.
+	\end{equation*}
+	The left hand side looks almost like the definition of the $L^p$ norm. Indeed, integrating both sides with respect to $x$, we obtain 
+	\begin{align*}
+		\displaystyle \int_{\omega}{\abs{f^\epsilon(x)}^p \: dx} \leq \int_{\omega}{\left( \int_{B(x,\epsilon)}{\eta_\epsilon(x-y) \abs{f(y)}^p \: dy} \right) \: dx}
+	\end{align*}
+	We exchange the order of integration and note that for $y \in \omega'$, we have
+	\begin{equation*}
+		\displaystyle \int_{\omega}{\abs{f^\epsilon(x)}^p \: dx} \leq \int_{\omega'}{\abs{f(y)}^p \left( \int_{B(y,\epsilon)}{\eta_\epsilon(x-y) \: dx}\right) \: dy} = \int_{\omega'}{\abs{f(y)}^p \: dy}
+	\end{equation*}
+	where again we have used the fact that the integral of the mollifier over the ball, with $y$ fixed, is identically $1$. This is the desired result. 
+	
+	Next, pick some $g \in C(\omega')$ such that for some $\delta > 0$, we have 
+	\begin{equation*}
+		\displaystyle \norm{f - g}_{L^p(\omega')} < \delta.
+	\end{equation*}
+	Finally, we have
+	\begin{align*}
+		\displaystyle \norm{f^\epsilon - f}_{L^p(\omega)} &= \norm{f^\epsilon + g^\epsilon - g^\epsilon + g - g - f}_{L^p(\omega)} \\
+		&\leq \norm{f^\epsilon - g^\epsilon}_{L^p(\omega)} + \norm{g - f}_{L^p(\omega)} + \norm{g^\epsilon - g}_{L^p(\omega)} \\
+		&\leq 2\norm{f-g}_{L^p(\omega')} + \norm{g^\epsilon - g}_{L^p(\omega)} \\
+		&< 2\delta + \norm{g^\epsilon - g}_{L^p(\omega)}.
+	\end{align*}
+	The first inequality is due to Minkowski. The second inequality is due to the result 
+	\begin{equation*}
+		\displaystyle \norm{f^\epsilon}_{L^p(\omega)} \leq \norm{f}_{L^p(\omega')}
+	\end{equation*}
+	which was proved above. Finally, note that since $\omega$ is a compact set of $\Omega$, we have that $g^\epsilon \to g$, as $\epsilon \to 0$, uniformly in $L^p(\omega)$. Taking the limit supremum, we have 
+	\begin{equation*}
+		\displaystyle \lim\sup\limits_{\epsilon \to 0}{\norm{f^\epsilon - f}_{L^p(\omega)}} = 0.
+	\end{equation*}
+	Thus we have that $f^\epsilon \to f$ in $L_{\loc}^p(\Omega)$. 
+	% Rewrite this proof, it is not pretty enough and very terse. 
+\end{proof}
+\section{References.}
+\end{document}

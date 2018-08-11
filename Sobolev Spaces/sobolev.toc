@@ -1,0 +1,19 @@
+\contentsline {section}{\numberline {1}Introduction.}{3}{section.1}
+\contentsline {section}{\numberline {2}Weak Derivatives.}{3}{section.2}
+\contentsline {section}{\numberline {3}Function Analytic Properties of Sobolev Spaces.}{7}{section.3}
+\contentsline {subsection}{\numberline {3.1}Dense Subspaces of $W^{k,p}(\Omega )$.}{8}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}The Space $W^{1,p}(\Omega )$.}{10}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Extensions of Sobolev Spaces.}{10}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Traces.}{13}{subsection.3.4}
+\contentsline {subsection}{\numberline {3.5}Sobolev Embeddings.}{15}{subsection.3.5}
+\contentsline {subsection}{\numberline {3.6}Compactness.}{20}{subsection.3.6}
+\contentsline {section}{\numberline {4}Second-Order Elliptic Equations.}{20}{section.4}
+\contentsline {subsection}{\numberline {4.1}Motivation for Weak Solutions.}{21}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Existence of Weak Solutions.}{22}{subsection.4.2}
+\contentsline {section}{\numberline {5}Second-Order Parabolic Equations.}{22}{section.5}
+\contentsline {subsection}{\numberline {5.1}Weak Solutions.}{23}{subsection.5.1}
+\contentsline {section}{\numberline {6}Appendix.}{23}{section.6}
+\contentsline {subsection}{\numberline {6.1}Results from Functional Analysis.}{23}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}The Space $H^{-1}$.}{24}{subsection.6.2}
+\contentsline {subsection}{\numberline {6.3}Mollification Theory.}{25}{subsection.6.3}
+\contentsline {section}{\numberline {7}References.}{28}{section.7}

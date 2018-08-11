@@ -1,0 +1,108 @@
+\documentclass[11pt]{amsart}
+\usepackage{geometry}
+\geometry{letterpaper,margin=1.5in}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{commath}
+\usepackage{units}
+\usepackage{enumitem}
+\usepackage{amsthm}
+\usepackage{esint}
+
+\usepackage[all]{xy}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[section]
+\newtheorem*{remark*}{Remark}
+
+\numberwithin{theorem}{section}
+\numberwithin{proposition}{section}
+\numberwithin{remark}{section}
+\numberwithin{corollary}{section}
+\numberwithin{definition}{section}
+\numberwithin{lemma}{section}
+\numberwithin{equation}{section}
+
+\usepackage[numbers,sort&compress]{natbib}
+\bibpunct{[}{]}{;}{n}{,}{,}
+\makeatletter
+\def\@tocline#1#2#3#4#5#6#7{\relax
+	\ifnum #1>\c@tocdepth % then omit
+	\else
+	\par \addpenalty\@secpenalty\addvspace{#2}%
+	\begingroup \hyphenpenalty\@M
+	\@ifempty{#4}{%
+		\@tempdima\csname r@tocindent\number#1\endcsname\relax
+	}{%
+		\@tempdima#4\relax
+	}%
+	\parindent\z@ \leftskip#3\relax \advance\leftskip\@tempdima\relax
+	\rightskip\@pnumwidth plus4em \parfillskip-\@pnumwidth
+	#5\leavevmode\hskip-\@tempdima
+	\ifcase #1
+	\or\or \hskip 1em \or \hskip 2em \else \hskip 3em \fi%
+	#6\nobreak\relax
+	\hfill\hbox to\@pnumwidth{\@tocpagenum{#7}}\par% <---- \dotfill -> \hfill
+	\nobreak
+	\endgroup
+	\fi}
+\makeatother
+
+
+\setcounter{tocdepth}{5}
+
+\usepackage[colorlinks=trye,bookmarksdepth=0,hidelinks]{hyperref}
+
+\newcommand{\bfi}{\bfseries\itshape}
+\DeclareMathOperator*{\ext}{ext}
+\DeclareMathOperator{\loc}{loc}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\supp}{supp}
+
+\allowdisplaybreaks
+
+
+% Defining some special symbols
+\def\Xint#1{\mathchoice
+	{\XXint\displaystyle\textstyle{#1}}%
+	{\XXint\textstyle\scriptstyle{#1}}%
+	{\XXint\scriptstyle\scriptscriptstyle{#1}}%
+	{\XXint\scriptscriptstyle\scriptscriptstyle{#1}}%
+	\!\int}
+\def\XXint#1#2#3{{\setbox0=\hbox{$#1{#2#3}{\int}$}
+		\vcenter{\hbox{$#2#3$}}\kern-.5\wd0}}
+\def\ddashint{\Xint=}
+\def\dashint{\Xint-}
+
+
+\title{The Theory of Sobolev Spaces and its Applications to Second-Order PDEs}
+\author{Jun Hao (Simon) Hu}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+	In this work, I motivative the development of the Sobolev space $W^{k,p}(\Omega)$ for the purposes of solving partial differential equations (PDEs). Sobolev spaces are equipped with excellent mathematical structure and allows us to use tools developed from functional analysis to study PDEs. I examine the applications of the theory of Sobolev space to second-order elliptic and parabolic equations. In particular, I examine the existence and uniqueness of weak solutions to PDEs. 
+\end{abstract}
+
+\section{Introduction.}
+It is widely accepted that PDEs are not easy to solve, yet they are useful in almost every discipline of study. When analysts solve a PDE problem, they are not interested in solutions that lack a specified degree of smoothness. This is due to practicality, and the application it is being used for. Unfortunately, it is rarely the case that we are able to find such smooth solutions, at least for PDEs with interesting applications. It is in these cases, that analysts turn to numerical methods to solve the problem. Common numerical methods perform a discretization of the domain and then reduce the problem to solving a matrix equation. A deep understanding of the function space in which the solution(s) lie is critical for developing an intuition for the expected outcome of the numerical method. Without such intuition, it would be difficult to confirm our results. Numerical solutions to PDE are often enough for applications in engineering, biology, and physics, but they lack differentiability, continuity, and other topological properties. Analysts are often interested in solutions that have these properties. 
+
+It turns out, these solutions often exist but it requires us to \textit{weaken} the notion of a derivative. The theory of Sobolev spaces introduces the concept of \textit{weak} derivatives, which generalize the notion of a derivative by moving away from the classical, or \textit{strong}, derivative that we are used to in undergraduate calculus courses. The theory of Sobolev spaces give rise to the concept of a \textit{weak} solution to the PDE, which are aptly named after the weak derivative. To understand these weak solutions, we will borrow ideas from functional analysis. Sobolev spaces are useful in this sense, because we can use tools from functional analysis to shine some light onto the PDE problem. 
+
+In this paper, I assume that the reader has already had some exposure to functional analysis. Furthermore, I assume that the reader has background knowledge on the theories of Banach, Hilbert, and $L^p$ spaces. A rudimentary introduction to mollifiers is helpful in understanding the material. If the reader requires a review, they should consult (insert reference here). Standard results, like inequalities and elementary theorems from functional analysis, will not be proved. For example, I will make use of the Minkowski, Young, and H\"older's inequalities, but they will not be proved. If the reader would like proof, they should consult any standard analysis text. Finally, I assume the reader has previous exposure to PDE theory, of which an introductory course will suffice.  
+
+This paper is divided into five sections, not withstanding this one. In section 2, we explore the concept of a weak derivative and familiarize the reader with the notation used in this paper. Furthermore, in this section, we introduce the Sobolev space. In section 3, we explore the function analytic properties of the Sobolev space, which is what makes it so useful for PDEs, and discuss properties of weak derivatives. Furthermore, we will discuss approximations and extensions, theories which will be useful in our later discussions. In section 4, we discuss second-order elliptic PDEs. In section 5, we discuss parabolic PDEs. In both sections 4 and 5, we will use the theory of Sobolev spaces to derive fundamental results that are important in the discussion of PDE. 
+\end{document}

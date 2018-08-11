@@ -1,0 +1,264 @@
+\documentclass[10pt]{article}
+\usepackage{geometry}
+\geometry{letterpaper,margin=1in}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{commath}
+\usepackage{units}
+\usepackage{enumitem}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{esint}
+
+\usepackage[all]{xy}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[section]
+\newtheorem*{remark*}{Remark}
+
+\numberwithin{theorem}{section}
+\numberwithin{proposition}{section}
+\numberwithin{remark}{section}
+\numberwithin{corollary}{section}
+\numberwithin{definition}{section}
+\numberwithin{lemma}{section}
+\numberwithin{equation}{section}
+
+\usepackage[numbers,sort&compress]{natbib}
+\bibpunct{[}{]}{;}{n}{,}{,}
+\makeatletter
+\def\@tocline#1#2#3#4#5#6#7{\relax
+	\ifnum #1>\c@tocdepth % then omit
+	\else
+	\par \addpenalty\@secpenalty\addvspace{#2}%
+	\begingroup \hyphenpenalty\@M
+	\@ifempty{#4}{%
+		\@tempdima\csname r@tocindent\number#1\endcsname\relax
+	}{%
+		\@tempdima#4\relax
+	}%
+	\parindent\z@ \leftskip#3\relax \advance\leftskip\@tempdima\relax
+	\rightskip\@pnumwidth plus4em \parfillskip-\@pnumwidth
+	#5\leavevmode\hskip-\@tempdima
+	\ifcase #1
+	\or\or \hskip 1em \or \hskip 2em \else \hskip 3em \fi%
+	#6\nobreak\relax
+	\hfill\hbox to\@pnumwidth{\@tocpagenum{#7}}\par% <---- \dotfill -> \hfill
+	\nobreak
+	\endgroup
+	\fi}
+\makeatother
+
+
+\setcounter{tocdepth}{5}
+
+\usepackage[colorlinks=trye,bookmarksdepth=0,hidelinks]{hyperref}
+
+\newcommand{\bfi}{\bfseries\itshape}
+\DeclareMathOperator*{\ext}{ext}
+\DeclareMathOperator{\loc}{loc}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\T}{trial}
+
+\allowdisplaybreaks
+
+
+% Defining some special symbols
+\def\Xint#1{\mathchoice
+	{\XXint\displaystyle\textstyle{#1}}%
+	{\XXint\textstyle\scriptstyle{#1}}%
+	{\XXint\scriptstyle\scriptscriptstyle{#1}}%
+	{\XXint\scriptscriptstyle\scriptscriptstyle{#1}}%
+	\!\int}
+\def\XXint#1#2#3{{\setbox0=\hbox{$#1{#2#3}{\int}$}
+		\vcenter{\hbox{$#2#3$}}\kern-.5\wd0}}
+\def\ddashint{\Xint=}
+\def\dashint{\Xint-}
+
+
+\title{Artificial Neural Networks for Solving ODEs and PDEs}
+\author{Jun Hao (Simon) Hu}
+
+\begin{document}
+\maketitle 
+\begin{abstract}	
+	Neural networks (NNs) are the holy grail of modern computation. They have seen their fair share of applications across numerous scientific disciplines. In this work, I present a method for solving initial and boundary-value problems using artificial neural networks (ANNs). I will mainly study its applications to both ordinary and partial differential equations up to the second order. Additionally, I will study error properties of this numerical method. Several examples and comparisons against other numerical methods commonly used will be presented.
+\end{abstract}
+\section{Introduction.}
+Numerical methods for solving differential equations are crucial to many problem in physics and engineering. The task of solving differential equations numerically, however, can be a computationally difficult challenge. In part, this is due to the curse of dimensionality and sometimes properties of the function space that the solution is an element of. Traditionally, numerical methods such as finite differences, element, and volume are adequate for most applications. Unfortunately, since these numerical methods are based on a particular collocation of the domain and as such, only output the solution to the PDE at the collocation points. This is acceptable in real-world applications, but not in theoretical applications where we want to extrapolate properties of solutions to the PDE. To mollify this issue, we employ neural networks, which can produce analytic solutions. It is well know that a multilayer perceptron, with one hidden layer, has excellent function approximation properties. As such, it is no surprise that we would want to employ these types of neural networks for solving differential equations, once we cast the PDE problem as a function approximation problem. By employing a feed-forward neural network architecture to solve differential equations, we obtain an analytic approximation to the solution which can have the required topological properties. These topological properties are desired when analyzing PDEs. 
+
+This numerical method exploits the ability of neural networks with a feed-forward architecture to approximate functions up to an arbitrary accuracy. These approximations have a closed form and have some degree of regularity, which makes these approximations desired for practical applications. The idea is to first guess a form of the solution, called the trial solution, and then train a neural network to learn the network parameters, which in this case are the weights and biases associated with each node. These network parameters are learned by minimizing an appropriate cost function. This trial solution is constructed with the initial and boundary conditions in mind.
+
+% The paragraph below needs to be completed and then edited. 
+% "In addition to its exceptional function...problem at hand."
+%In addition to its exceptional function approximation properties, utilizing neural networks to solve %differential equations has many advantages. However, with any numerical method, there are opportunities %and dangers that must be taken into account, before implementing the method for the problem at hand.
+
+Though the study of existence and uniqueness for PDEs is a rich and interesting field of study, we will not concern ourselves with these issues. As a caveat, I will assume that the differential equation problem has a solution, and this solution does not need to be unique. Furthermore, I will only consider differential equations up to, and including, the second order. This method can potentially work for higher-order differential equations, but that is an area that will not be touched in this paper.
+
+\subsection{Structure of Paper.}
+In section 2, I present the proposed numerical method. In section 3, 4, and 5, I focus on classes of linear ODEs, systems of ODEs, and PDEs respectively, that can be tackled using the proposed method. Examples will be presented and the results will be compared against numerical solutions obtained via other methods. In section 6, I discuss the possibility of using this method for non-linear PDE. In section 7, I discuss further directions this research topic can take.  
+
+\section{Proposed Numerical Method.}
+We begin with a remark regarding the notation used in this paper. 
+\begin{remark}
+	For the remainder of the paper,
+	\begin{enumerate}
+		\item $\Omega \subset \mathbb{R}^n$ is an open set,
+		\item $\partial \Omega$ denotes the boundary of $\Omega$,
+		\item $\bar{\Omega} = \Omega \cup \partial \Omega$ denotes the closure of $\Omega$, 
+		\item we will use the shorthand $f_i$ to denote $f(x_i)$, where $f$ is any arbitrary function
+		\item $D$ and $D^2$ denote the gradient and Hessian operators, respectively.
+	\end{enumerate}
+\end{remark}
+\subsection{Formulation of the Problem.}
+Consider the problem of finding a function $\psi = \psi(x), \: \psi: \bar{\Omega} \to \mathbb{R}$ that, for some specified $f = f(x), \: f: \Omega \to \mathbb{R}$, satisfies
+\begin{equation}
+	\label{formulation of the method, general differential equation}
+	\displaystyle G(x,\psi(x),D\psi(x), D^2\psi(x)) = f(x), \: x \in \Omega 
+\end{equation}
+subject to appropriate initial and boundary conditions. This is not a particularly easy problem to solve, especially if the left-hand side is complicated and/or non-linear. Additionally, the requirement that Eq. (\ref{formulation of the method, general differential equation}) hold \textit{for all} $x \in \Omega$ creates a computational burden. As this proposed method is a numerical method at its core, the problem must be treated as a numerical one. Thus, we relax the condition by saying that, while Eq. (\ref{formulation of the method, general differential equation}) may not hold for all $x \in \Omega$, can it hold for a finite collect of $x$? To relieve the burden, we perform a discretization of the domain $\Omega$ and its boundary $\partial \Omega$. Let $U \subset \Omega$ be the discretized domain and $\partial U$ be its boundary. With this particular discretization, the problem reduces to finding a function $\psi$ that satisfies 
+\begin{equation}
+	\label{formulation of the method, general differential equation, discretized version}
+	\displaystyle G(x_i, \psi_i, D\psi_i, D^2\psi_i) = f(x_i), \: \forall \: x_i \in U
+\end{equation} 
+subject to a discretized version of the initial and boundary conditions. 
+
+\subsection{Trial Function.}
+We will construct a function $\psi_{\T} = \psi_{\T}(x,p), \: \psi_{\T} : \bar{\Omega} \to \mathbb{R}$, where $p$ is the vector of parameters, that solves (\ref{formulation of the method, general differential equation, discretized version}). For our cases, the function $\psi_{\T}$ contains the weights and biases associated with our network, which will be learned by the network using some sort of gradient descent algorithm. In light of the trial solution, (\ref{formulation of the method, general differential equation, discretized version}) becomes an approximation problem! We have an initial guess of our solution and that initial guess is fine-tuned so that the left-hand side approximates the right-hand side. 
+
+Let us suppose that the trial function has the form 
+
+\begin{equation}
+	\label{formulation of the method, form of the trial function}
+	\displaystyle \psi_{\T}(x,p) = \xi(x) + \gamma(x) N(x,p)
+\end{equation}
+where $N(x,p)$ is the output of the feed-forward neural network. The function $\xi(x)$ is chosen so that the boundary and initial conditions are satisfied, and $\gamma(x)$ is chosen so that it does not contribute to the boundary and initial conditions. Since we used collocation methods to reduce the problem to a numerical problem, it is often true that $\gamma(x)$ and $\xi(x)$ are constructed using discretized boundary conditions. 
+
+Our hope is that, with the learned parameters in hand, the function $\psi_{\T}$ smoothly approximates $\psi$ to some degree of accuracy. To measure the effectiveness of our approximation, we need to decide on an appropriate cost function. 
+
+\subsection{Cost Function.}
+Choosing a good cost function is an art in and of itself, but it is usually clear from the problem at hand what the cost function should be, since it has a physical interpretation. For example, when performing statistical inference, an underlying metric is specified, so the cost function should be chosen so as to optimize with respect to this metric. A good choice of a cost function can make the difference between an effective and ineffective model. For simplicity, when discussing linear ODEs and systems of ODEs, we will use the standard squared-error cost function. That is, the loss function $J = J(p)$ is given by 
+\begin{equation}
+	\label{formulation of the method, cost function for ODEs}
+	\displaystyle J(p) := \sum\limits_{x_i \in U}{[ G(x_i, \psi_i, D\psi_i, D^2\psi_i) - f_i ]^2}.
+\end{equation}
+Training the network is equivalent to finding $p^*$ such that 
+\begin{equation*}
+	\displaystyle p^* := \arg\min_{p}{[J(p)]}.
+\end{equation*}
+With this $p^*$ in hand, the optimal trial solution is therefore given by $\psi_{\T}(x,p^*)$, which we treat as the solution to (\ref{formulation of the method, general differential equation}). 
+
+The reader should note that (\ref{formulation of the method, cost function for ODEs}) is not always the most optimal choice of cost function. As we will see later with PDEs, a better choice of cost function should optimize with respect to the norm of the function space in which the solution lies in. With PDEs, the choices of cost functions are much richer as there is a lot of theory, that we will not discuss in detail, behind solutions to PDEs. To reiterate, the choice of cost function requires a lot of knowledge about the underlying theory of differential equations. Our choice is based on simplicity. 
+
+\subsection{Neural Network Architecture.}
+Consider a feed-forward neural network architecture with one hidden layer, an input layer, and an output layer, as shown in the figure below. 
+\vspace{0.5in}
+% ---------------------------------------------------------
+% TIKZ picture STARTS here
+% ---------------------------------------------------------
+\begin{figure} [H]
+\centering
+\def\layersep{2.5cm} % define the amount of separation between each layer
+\def\nodeinlayersep{1cm}
+
+\begin{tikzpicture}[shorten >= 1pt, ->, draw = black!50, node distance = \layersep]
+
+	% define the graphical settings for the neural network
+	
+	\tikzstyle{every pin edge} = [<-, shorten <= 1pt]
+	\tikzstyle{neuron} = [circle, fill = black!25, minimum size = 10pt, inner sep = 0pt]
+	\tikzstyle{input neuron} = [neuron, fill = green!50];
+	\tikzstyle{output neuron} = [neuron, fill = blue!50];
+	\tikzstyle{hidden neuron} = [neuron, fill = red!50];
+	\tikzstyle{annot} = [text width = 4em, text centered]
+
+	% draw the input layer nodes
+	
+	\foreach \name / \y in {1,...,3} {
+		\ifnum \y = 3
+			\node at (0,-\y*\nodeinlayersep) {$\vdots$};
+		\else 
+			\node[input neuron, pin = {left:$x_\y$}] (I-\name) at (0,-\y) {};
+		\fi
+	}
+
+	\node[input neuron, pin = left:$x_n$] (I-4) at (0,-4) {};
+	\node[input neuron, pin = left:bias] (I-5) at (0,-5) {};
+	
+	% drawn the hidden layer
+	
+	\node[hidden neuron] (H-0) at (\layersep,0) {};
+	
+	\foreach \name / \y in {1,...,3} {
+		\ifnum \y = 3
+			\node (H-dots) at (\layersep,-\y*\nodeinlayersep) {$\vdots$};
+		\else 
+			\node[hidden neuron] (H-\name) at (\layersep,-\y cm) {};
+		\fi
+	}
+
+	\node[hidden neuron] (H-4) at (\layersep,-4) {};
+	\node[hidden neuron] (H-5) at (\layersep,-5) {};
+	\node[hidden neuron] (H-6) at (\layersep,-6) {};
+
+	% draw the output layer
+	
+	\node[output neuron, pin = {[pin edge = {->}]right:$N(x,p)$}, right of=H-dots] (0) {};
+	
+	% make the connections from the input layer to the hidden layer
+	
+	\foreach \source in {1,...,2}
+		\foreach \dest in {0,...,2}
+			\path (I-\source) edge (H-\dest);
+	
+	\foreach \source in {1,...,2}
+		\foreach \dest in {4,...,5}
+			\path (I-\source) edge (H-\dest);
+			
+	\foreach \source in {4,...,5}
+		\foreach \dest in {0,...,2}
+			\path (I-\source) edge (H-\dest);
+			
+	\foreach \source in {4,...,5}
+		\foreach \dest in {4,...,6}
+			\path (I-\source) edge (H-\dest);
+			
+	% make the connections from the hidden layer to the output layer
+	
+	\foreach \source in {0,...,2}
+		\path (H-\source) edge (0);
+		
+	\foreach \source in {4,...,6}
+		\path (H-\source) edge (0);
+		
+	% annotate the layers 
+	
+	\node[annot, above of = H-0, node distance = 1cm] (h1) {Hidden Layer};
+	\node[annot, left of = h1] {Input Layer};
+	\node[annot, right of = h1] {Output Layer};
+\end{tikzpicture}
+\caption{Schematic of a feed-forward neural network with one hidden layer.}
+\end{figure}
+In this neural network structure, we have an input layer with $n+1$ nodes, a hidden layer with $m$ nodes, and an output layer with $1$ node. The output of this neural network is the function $N(x,p)$, which appears in our assumed form of the trial solution. We will use the ReLU activation function, however, wherever appropriate we will also use the leaky ReLU activation function to rectify issues arising from dead neurons. The ReLU activation function is chosen due to its effectiveness at deterring the vanishing gradient effect. 
+\section{Ordinary Differential Equations.}
+\section{Systems of Ordinary Differential Equations.}
+\section{Linear Partial Differential Equations.}
+\subsection{Monte Carlo Method for Efficient Computation of Gradient.}
+\section{Non-Linear Partial Differential Equations.}
+\section{References.} 
+\end{document} 
