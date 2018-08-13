@@ -10,10 +10,10 @@
 \contentsline {section}{\numberline {4}Second-Order Elliptic Equations.}{20}{section.4}
 \contentsline {subsection}{\numberline {4.1}Motivation for Weak Solutions.}{21}{subsection.4.1}
 \contentsline {subsection}{\numberline {4.2}Existence of Weak Solutions.}{22}{subsection.4.2}
-\contentsline {section}{\numberline {5}Second-Order Parabolic Equations.}{22}{section.5}
+\contentsline {section}{\numberline {5}Second-Order Parabolic Equations.}{23}{section.5}
 \contentsline {subsection}{\numberline {5.1}Weak Solutions.}{23}{subsection.5.1}
 \contentsline {section}{\numberline {6}Appendix.}{23}{section.6}
 \contentsline {subsection}{\numberline {6.1}Results from Functional Analysis.}{23}{subsection.6.1}
-\contentsline {subsection}{\numberline {6.2}The Space $H^{-1}$.}{24}{subsection.6.2}
-\contentsline {subsection}{\numberline {6.3}Mollification Theory.}{25}{subsection.6.3}
+\contentsline {subsection}{\numberline {6.2}The Space $H^{-1}$.}{25}{subsection.6.2}
+\contentsline {subsection}{\numberline {6.3}Mollification Theory.}{26}{subsection.6.3}
 \contentsline {section}{\numberline {7}References.}{28}{section.7}

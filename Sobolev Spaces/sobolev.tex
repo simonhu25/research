@@ -10,14 +10,14 @@
 \maketitle
 
 \begin{abstract}
-	In this work, I motivative the development of the Sobolev space $W^{k,p}(\Omega)$ for the purposes of solving partial differential equations (PDEs). Sobolev spaces are equipped with excellent mathematical structure and allows us to use tools developed from functional analysis to study PDEs. I examine the applications of the theory of Sobolev space to second-order elliptic and parabolic equations. In particular, I examine the existence and uniqueness of weak solutions to PDEs. 
+	In this paper, I motivate the development of the Sobolev space $W^{k,p}(Omega)$ for the purpose of solving partial differential equations (PDEs). Sobolev spaces possess excellent mathematical structure that allows us to use tools developed from functional analysis to study PDEs. Applications of Sobolev spaces to second-order elliptic and parabolic equations will be presented. In particular, I examine topological properties of solutions, strong and weak, to second-order elliptic and parabolic equations.
 \end{abstract}
 \vspace{1in}
 \begin{center}
 	Acknowledgments.
 \end{center}
 
-\small{I would like to acknowledge my friends and family for their continued support in all of my endeavors. Additionally, I would like to acknowledge the tremendous support my instructors have provided me. Their support, criticism, and knowledge have made it possible for me to understand the theory of Sobolev spaces and present their applications in this manner. I am eternally grateful for the opportunity to study Sobolev spaces and their applications to PDEs.}
+\small{I would like to acknowledge my friends and family for thei continued support in all of my academic endeavors. Additionally, I would like to acknowledge the tremendous support my instructors have provided me. Their support, criticism, and knowledge have made it possible for me to understand the theory of Sobolev spaces and present their applications in this manner. Furthermore, I am eternally grateful for the opportunity to study Sobolev spaces and their applications to PDEs.}
 
 \newpage 
 
@@ -1026,8 +1026,20 @@ where $\bar{f} = f - Lw \in H^{-1}(\Omega)$, we can recover the solution to (\re
 \subsection{Existence of Weak Solutions.}
 Motivated by our search for weak solutions, we step back and ask ourselves: what conditions, if any, must be satisfied for a weak solution to exist? To this end, we introduce a fundamental result from functional analysis that will be useful for studying the existence of weak solutions. 
 \begin{remark}
-	For the remainder of this section, let $H$ be a Hilbert space endowed with the norm $\norm{\cdot}$ and inner product $(\:,\:)$. 
+	For the remainder of this section, let $H$ be a Hilbert space endowed with the norm $\norm{\,\cdot\,}$ and inner product $(\:,\:)$. 
 \end{remark}
+Before we discuss the Lax-Milgram theorem, which will be useful for showing that the weak solution exists, we first make some remarks about the operator $\mathcal{L}$. Let us consider 
+\begin{equation}
+	\displaystyle B[u,v] = \int_{\Omega}{\sum\limits_{i,j = 1}^{n}{a_{ij}u_{x_i}v_{x_j}} + \sum\limits_{i=1}^{n}{b_i u_{x_i}v} + cuv \: dx}
+\end{equation}
+which is exactly the non-divergence form for the second-order elliptic operator. Then for $u,v \in H_0^1(\Omega)$, we observe that 
+\begin{align*}
+	\displaystyle \abs{B[u,v]} &\leq \int_{\Omega}{\sum\limits_{i,j=1}^{n}{\abs{a_{ij}}|u_{x_i}||v_{x_j}|} + \sum\limits_{i=1}^{n}{\abs{b_i} |u_{x_i}||v|} + cuv \: dx} 
+\end{align*}
+where we have used the triangle and Cauchy-Schwarz inequalities. Furthermore, we observe that 
+\begin{equation*}
+	\displaystyle 
+\end{equation*}
 \begin{theorem}
 	\label{existence of weak solutions, lax-milgram theorem}
 	Let $B: H \times H \to \R$ be a bilinear mapping, such that for positive constants $\alpha, \beta$, we have 
